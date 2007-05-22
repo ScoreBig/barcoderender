@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarcodeRender", "BarcodeRender\BarcodeRender.csproj", "{A96E1B05-9603-46E6-8B0F-0F033C01D10D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zen.Barcode.Core", "Zen.Barcode.Core\Zen.Barcode.Core.csproj", "{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{029C56B2-55CA-45D2-91E3-654473D945C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Winform Test", "Winform Test", "{7C8DF4AA-FEE5-4112-B41B-55ECEB84BDFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{64A88384-A777-47DE-A213-13A0157DC278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zen.Barcode.Web", "Zen.Barcode.Web\Zen.Barcode.Web.csproj", "{D0649650-7F21-44B1-89AC-A78560B53FD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{530B4A05-1C26-412D-859A-A1DA84BDE66F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zen.Barcode.Design", "Zen.Barcode.Design\Zen.Barcode.Design.csproj", "{317660B9-E8AF-4564-90B4-B48AA0DCC697}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs02.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BarcodeRender\\BarcodeRender.csproj
+		SccProjectTopLevelParentUniqueName1 = BarcodeRender.sln
+		SccProjectName1 = BarcodeRender
+		SccLocalPath1 = BarcodeRender
+		SccProjectUniqueName2 = Zen.Barcode.Core\\Zen.Barcode.Core.csproj
+		SccProjectTopLevelParentUniqueName2 = BarcodeRender.sln
+		SccProjectName2 = Zen.Barcode.Core
+		SccLocalPath2 = Zen.Barcode.Core
+		SccProjectUniqueName3 = Zen.Barcode.Design\\Zen.Barcode.Design.csproj
+		SccProjectTopLevelParentUniqueName3 = BarcodeRender.sln
+		SccProjectName3 = Zen.Barcode.Design
+		SccLocalPath3 = Zen.Barcode.Design
+		SccProjectUniqueName4 = Zen.Barcode.Web\\Zen.Barcode.Web.csproj
+		SccProjectTopLevelParentUniqueName4 = BarcodeRender.sln
+		SccProjectName4 = Zen.Barcode.Web
+		SccLocalPath4 = Zen.Barcode.Web
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A96E1B05-9603-46E6-8B0F-0F033C01D10D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A96E1B05-9603-46E6-8B0F-0F033C01D10D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A96E1B05-9603-46E6-8B0F-0F033C01D10D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A96E1B05-9603-46E6-8B0F-0F033C01D10D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0649650-7F21-44B1-89AC-A78560B53FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0649650-7F21-44B1-89AC-A78560B53FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0649650-7F21-44B1-89AC-A78560B53FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0649650-7F21-44B1-89AC-A78560B53FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{317660B9-E8AF-4564-90B4-B48AA0DCC697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{317660B9-E8AF-4564-90B4-B48AA0DCC697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{317660B9-E8AF-4564-90B4-B48AA0DCC697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{317660B9-E8AF-4564-90B4-B48AA0DCC697}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7C8DF4AA-FEE5-4112-B41B-55ECEB84BDFC} = {64A88384-A777-47DE-A213-13A0157DC278}
+		{77484B9B-7400-4C6E-A997-CAB7FA7F9B1E} = {029C56B2-55CA-45D2-91E3-654473D945C6}
+		{A96E1B05-9603-46E6-8B0F-0F033C01D10D} = {7C8DF4AA-FEE5-4112-B41B-55ECEB84BDFC}
+		{D0649650-7F21-44B1-89AC-A78560B53FD9} = {530B4A05-1C26-412D-859A-A1DA84BDE66F}
+		{317660B9-E8AF-4564-90B4-B48AA0DCC697} = {530B4A05-1C26-412D-859A-A1DA84BDE66F}
+	EndGlobalSection
+EndGlobal
