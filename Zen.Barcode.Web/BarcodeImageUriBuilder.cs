@@ -48,6 +48,7 @@ namespace Zen.Barcode.Web
 		/// <summary>
 		/// The barcode string to be encoded
 		/// </summary>
+		/// <value>The text.</value>
 		public string Text
 		{
 			get
@@ -63,14 +64,8 @@ namespace Zen.Barcode.Web
 		/// <summary>
 		/// Gets/sets the barcode encoding scheme
 		/// </summary>
-		/// <remarks>
-		/// The following scheme numbers are supported;
-		/// <list type="Bullet">
-		/// <item>Code39 - Variable length alphanumeric with full ASCII support.</item>
-		/// <item>Code93 - Denser variant of Code39 with full ASCII support.</item>
-		/// <item>Code128 - Very dense variable length alphanumeric full ASCII support.</item>
-		/// </list>
-		/// </remarks>
+		/// <value>A value from the <see cref="T:EncodingScheme"/> 
+		/// enumeration.</value>
 		public EncodingSystem EncodingScheme
 		{
 			get

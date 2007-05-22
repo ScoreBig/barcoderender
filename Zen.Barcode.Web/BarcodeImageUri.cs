@@ -18,7 +18,7 @@ namespace Zen.Barcode.Web
 	/// For all of this to work the following line must be added to web.config
 	/// in the httpHandler section
 	/// <![CDATA[
-	/// <add verb="GET" path="*.NobleBarcode" type="Noble.Portal.Handlers.BarcodeImageHandler, Noble.Portal.UI" />
+	/// <add verb="GET" path="*.Barcode" type="Zen.Barcode.Web.BarcodeImageHandler, Zen.Barcode.Web, Culture=Neutral, Version=2.0.1.0, PublicKeyToken=b5ae55aa76d2d9de" />
 	/// ]]>
 	/// The .NobleBarcode file extension will need to be associated with ASP.NET
 	/// from within IIS and the "Check if the file exists" checkbox must be cleared.

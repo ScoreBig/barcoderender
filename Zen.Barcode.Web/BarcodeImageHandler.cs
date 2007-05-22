@@ -19,7 +19,7 @@ namespace Zen.Barcode.Web
 	/// <remarks>
 	/// <para>
 	/// The bar-code symbology and size metrics are encoded into the image
-	/// filename by <see cref="T:Noble.Runtime.BarcodeImageUrlBuilder"/>.
+	/// filename by <see cref="T:Zen.Barcode.Web.BarcodeImageUrlBuilder"/>.
 	/// </para>
 	/// <para>
 	/// Currently the image format is fixed as JPEG.
