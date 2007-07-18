@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Zen.Barcode.Properties;
+
 namespace Zen.Barcode
 {
 	/// <summary>
@@ -165,5 +167,97 @@ namespace Zen.Barcode
 			}
 		}
 		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Gets the barcode drawing object for rendering the specified
+		/// barcode symbology.
+		/// </summary>
+		/// <param name="symbology">
+		/// A value from the <see cref="T:BarcodeSymbology"/> enumeration.
+		/// </param>
+		/// <returns>
+		/// A class derived from <see cref="T:BarcodeDraw"/>.
+		/// </returns>
+		/// <exception cref="T:ArgumentException">
+		/// Thrown if the specified symbology is invalid or unknown.
+		/// </exception>
+		public static BarcodeDraw GetSymbology (BarcodeSymbology symbology)
+		{
+			switch (symbology)
+			{
+				case BarcodeSymbology.Code39NC:
+					return Code39WithoutChecksum;
+				case BarcodeSymbology.Code39C:
+					return Code39WithChecksum;
+				case BarcodeSymbology.Code93:
+					return Code93WithChecksum;
+				case BarcodeSymbology.Code128:
+					return Code128WithChecksum;
+				case BarcodeSymbology.Code11NC:
+					return Code11WithoutChecksum;
+				case BarcodeSymbology.Code11C:
+					return Code11WithChecksum;
+				case BarcodeSymbology.CodeEan13:
+					return CodeEan13WithChecksum;
+				case BarcodeSymbology.CodeEan8:
+					return CodeEan8WithChecksum;
+				default:
+					throw new ArgumentException (
+						Resources.BarcodeSymbologyInvalid, "symbology");
+			}
+		}
+		#endregion
+	}
+
+	/// <summary>
+	/// <c>BarcodeSymbology</c> defines the supported barcode symbologies.
+	/// </summary>
+	public enum BarcodeSymbology
+	{
+		/// <summary>
+		/// Unknown symbology.
+		/// </summary>
+		Unknown = 0,
+
+		/// <summary>
+		/// Code 39 (aka Code 3 of 9) without checksum
+		/// </summary>
+		Code39NC = 1,
+
+		/// <summary>
+		/// Code 39 (aka Code 3 of 9) with checksum
+		/// </summary>
+		Code39C = 2,
+
+		/// <summary>
+		/// Code 93 with checksum
+		/// </summary>
+		Code93 = 3,
+
+		/// <summary>
+		/// Code 128 with checksum
+		/// </summary>
+		Code128 = 4,
+
+		/// <summary>
+		/// Code 11 without checksum
+		/// </summary>
+		Code11NC = 5,
+
+		/// <summary>
+		/// Code 11 with checksum
+		/// </summary>
+		Code11C = 6,
+
+		/// <summary>
+		/// Code EAN-13 with checksum
+		/// </summary>
+		CodeEan13 = 7,
+
+		/// <summary>
+		/// Code EAN-8 with checksum
+		/// </summary>
+		CodeEan8 = 8,
 	}
 }

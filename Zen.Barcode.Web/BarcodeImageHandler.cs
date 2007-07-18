@@ -101,96 +101,16 @@ namespace Zen.Barcode.Web
 					_response.Clear ();
 					_response.BufferOutput = true;
 
-					switch (uri.EncodingScheme)
+					// Get the object capable of rendering the barcode
+					BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology (
+						uri.EncodingScheme);
+
+					// Render barcode and save directly onto response stream
+					using (Image image = drawObject.Draw (uri.Text,
+						uri.BarMinHeight, uri.BarMaxHeight,
+						uri.BarMinWidth, uri.BarMaxWidth))
 					{
-						case EncodingSystem.Code39NC:
-							using (Image image39 =
-								BarcodeDrawFactory.Code39WithoutChecksum.Draw (
-								uri.Text, 
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image39.Save (_response.OutputStream,
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.Code39C:
-							using (Image image39 =
-								BarcodeDrawFactory.Code39WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image39.Save (_response.OutputStream,
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.Code93:
-							using (Image image93 =
-								BarcodeDrawFactory.Code93WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image93.Save (_response.OutputStream,
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.Code128:
-							using (Image image128 =
-								BarcodeDrawFactory.Code128WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image128.Save (_response.OutputStream,
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.Code11NC:
-							using (Image image11 = 
-								BarcodeDrawFactory.Code11WithoutChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image11.Save (_response.OutputStream,
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.Code11C:
-							using (Image image11 = 
-								BarcodeDrawFactory.Code11WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								image11.Save (_response.OutputStream, 
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.CodeEan13:
-							using (Image imageEan = 
-								BarcodeDrawFactory.CodeEan13WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								imageEan.Save (_response.OutputStream, 
-									ImageFormat.Jpeg);
-							}
-							break;
-						case EncodingSystem.CodeEan8:
-							using (Image imageEan = 
-								BarcodeDrawFactory.CodeEan8WithChecksum.Draw (
-								uri.Text,
-								uri.BarMinHeight, uri.BarMaxHeight,
-								uri.BarMinWidth, uri.BarMaxWidth))
-							{
-								imageEan.Save (_response.OutputStream, 
-									ImageFormat.Jpeg);
-							}
-							break;
+						image.Save (_response.OutputStream, ImageFormat.Jpeg);
 					}
 				}
 				catch (Exception e)

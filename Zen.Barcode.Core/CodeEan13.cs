@@ -278,7 +278,7 @@ namespace Zen.Barcode
 	/// that can render complete Code EAN 13 barcodes with checksum.
 	/// </summary>
 	public class CodeEan13BarcodeDraw
-		: BarcodeDraw<CodeEan13GlyphFactory, CodeEan13Checksum>
+		: BarcodeDrawBase<CodeEan13GlyphFactory, CodeEan13Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -289,6 +289,20 @@ namespace Zen.Barcode
 		public CodeEan13BarcodeDraw (CodeEan13Checksum checksum)
 			: base (checksum.Factory, checksum, 7)
 		{
+		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object 
+		/// containing default settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns></returns>
+		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+		{
+			// TODO: Min bar height should be percentage of max height
+			return new BarcodeMetrics (1, 1, maxHeight - 5, maxHeight);
 		}
 		#endregion
 

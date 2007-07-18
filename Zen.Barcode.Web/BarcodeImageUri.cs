@@ -31,7 +31,7 @@ namespace Zen.Barcode.Web
 
 		private string _text;
 
-		private EncodingSystem _encodingScheme;
+		private BarcodeSymbology _encodingScheme;
 		private int _barMinHeight = 30;
 		private int _barMaxHeight = 30;
 		private int _barMinWidth = 1;
@@ -105,7 +105,7 @@ namespace Zen.Barcode.Web
 		/// Gets the encoding scheme.
 		/// </summary>
 		/// <value>The encoding scheme.</value>
-		public EncodingSystem EncodingScheme
+		public BarcodeSymbology EncodingScheme
 		{
 			get
 			{
@@ -220,7 +220,7 @@ namespace Zen.Barcode.Web
 			string encoding = m.Result ("${EncodingSystem}");
 			if (!string.IsNullOrEmpty (encoding))
 			{
-				_encodingScheme = (EncodingSystem) Int32.Parse (encoding);
+				_encodingScheme = (BarcodeSymbology) Int32.Parse (encoding);
 			}
 
 			// Determine barcode height
@@ -251,56 +251,5 @@ namespace Zen.Barcode.Web
 			_text = m.Result ("${BarCodePayload}");
 		}
 		#endregion
-	}
-
-	/// <summary>
-	/// <c>EncodingSystem</c> defines the supported barcode symbologies.
-	/// </summary>
-	public enum EncodingSystem
-	{
-		/// <summary>
-		/// Unknown symbology.
-		/// </summary>
-		Unknown = 0,
-
-		/// <summary>
-		/// Code 39 (aka Code 3 of 9) without checksum
-		/// </summary>
-		Code39NC = 1,
-
-		/// <summary>
-		/// Code 39 (aka Code 3 of 9) with checksum
-		/// </summary>
-		Code39C = 2,
-
-		/// <summary>
-		/// Code 93 with checksum
-		/// </summary>
-		Code93 = 3,
-
-		/// <summary>
-		/// Code 128 with checksum
-		/// </summary>
-		Code128 = 4,
-
-		/// <summary>
-		/// Code 11 without checksum
-		/// </summary>
-		Code11NC = 5,
-
-		/// <summary>
-		/// Code 11 with checksum
-		/// </summary>
-		Code11C = 6,
-
-		/// <summary>
-		/// Code EAN-13 with checksum
-		/// </summary>
-		CodeEan13 = 7,
-
-		/// <summary>
-		/// Code EAN-8 with checksum
-		/// </summary>
-		CodeEan8 = 8,
 	}
 }

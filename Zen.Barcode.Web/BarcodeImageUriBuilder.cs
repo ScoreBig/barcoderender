@@ -28,7 +28,7 @@ namespace Zen.Barcode.Web
 		#region Private Fields
 		private string _text;
 
-		private EncodingSystem _encodingScheme;
+		private BarcodeSymbology _encodingScheme;
 		private int _barMinHeight = 30;
 		private int _barMaxHeight = 30;
 		private int _barMinWidth = 1;
@@ -64,9 +64,9 @@ namespace Zen.Barcode.Web
 		/// <summary>
 		/// Gets/sets the barcode encoding scheme
 		/// </summary>
-		/// <value>A value from the <see cref="T:EncodingScheme"/> 
+		/// <value>A value from the <see cref="T:BarcodeSymbology"/> 
 		/// enumeration.</value>
-		public EncodingSystem EncodingScheme
+		public BarcodeSymbology EncodingScheme
 		{
 			get
 			{

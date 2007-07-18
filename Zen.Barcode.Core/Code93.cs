@@ -314,7 +314,7 @@ namespace Zen.Barcode
 	/// that can render complete Code93 barcodes with checksum.
 	/// </summary>
 	public class Code93BarcodeDraw
-		: BarcodeDraw<Code93GlyphFactory, Code93Checksum>
+		: BarcodeDrawBase<Code93GlyphFactory, Code93Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -325,6 +325,19 @@ namespace Zen.Barcode
 		public Code93BarcodeDraw (Code93Checksum checksum)
 			: base (checksum.Factory, checksum, 9)
 		{
+		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object 
+		/// containing default settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns></returns>
+		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+		{
+			return new BarcodeMetrics (1, 2, maxHeight);
 		}
 		#endregion
 

@@ -264,7 +264,7 @@ namespace Zen.Barcode
 	/// differing mechanisms used to return gyph arrays.
 	/// </remarks>
 	public class CodeEan8BarcodeDraw
-		: BarcodeDraw<CodeEan8GlyphFactory, CodeEan8Checksum>
+		: BarcodeDrawBase<CodeEan8GlyphFactory, CodeEan8Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -276,6 +276,20 @@ namespace Zen.Barcode
 			: base (checksum.Factory, checksum, 7)
 		{
 		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object 
+		/// containing default settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns></returns>
+		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+		{
+			// TODO: Min bar height should be percentage of max height
+			return new BarcodeMetrics (1, 1, maxHeight - 5, maxHeight);
+		} 
 		#endregion
 
 		#region Protected Methods

@@ -41,7 +41,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code11NC;
+			uri.EncodingScheme = BarcodeSymbology.Code11NC;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = 1;
 			uri.BarMaxWidth = 3;
@@ -58,7 +58,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code11C;
+			uri.EncodingScheme = BarcodeSymbology.Code11C;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = 1;
 			uri.BarMaxWidth = 3;
@@ -75,7 +75,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code39NC;
+			uri.EncodingScheme = BarcodeSymbology.Code39NC;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = 1;
 			uri.BarMaxWidth = 2;
@@ -92,7 +92,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code39C;
+			uri.EncodingScheme = BarcodeSymbology.Code39C;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = 1;
 			uri.BarMaxWidth = 2;
@@ -109,7 +109,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code93;
+			uri.EncodingScheme = BarcodeSymbology.Code93;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = 1;
 			uri.BarMaxWidth = 2;
@@ -126,7 +126,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.Code93;
+			uri.EncodingScheme = BarcodeSymbology.Code93;
 			uri.BarMinHeight = uri.BarMaxHeight = 30;
 			uri.BarMinWidth = uri.BarMaxWidth = 1;
 			return uri.ToString ();
@@ -142,7 +142,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.CodeEan13;
+			uri.EncodingScheme = BarcodeSymbology.CodeEan13;
 			uri.BarMinHeight = 25;
 			uri.BarMaxHeight = 30;
 			uri.BarMinWidth = uri.BarMaxWidth = 1;
@@ -159,7 +159,7 @@ namespace Zen.Barcode.Web.Xsl
 		{
 			BarcodeImageUriBuilder uri = new BarcodeImageUriBuilder ();
 			uri.Text = text;
-			uri.EncodingScheme = EncodingSystem.CodeEan8;
+			uri.EncodingScheme = BarcodeSymbology.CodeEan8;
 			uri.BarMinHeight = 25;
 			uri.BarMaxHeight = 30;
 			uri.BarMinWidth = uri.BarMaxWidth = 1;

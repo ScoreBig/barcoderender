@@ -188,7 +188,7 @@ namespace Zen.Barcode
 	/// that can render complete Code11 barcodes with or without checksum.
 	/// </summary>
 	public class Code11BarcodeDraw
-		: BarcodeDraw<Code11GlyphFactory, Code11Checksum>
+		: BarcodeDrawBase<Code11GlyphFactory, Code11Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -209,6 +209,19 @@ namespace Zen.Barcode
 		public Code11BarcodeDraw (Code11Checksum checksum)
 			: base (checksum.Factory, checksum, 0, 5)
 		{
+		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object 
+		/// containing default settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns></returns>
+		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+		{
+			return new BarcodeMetrics (1, 3, maxHeight);
 		}
 		#endregion
 

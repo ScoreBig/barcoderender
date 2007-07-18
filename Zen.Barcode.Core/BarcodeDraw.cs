@@ -8,14 +8,251 @@ using System.Text;
 namespace Zen.Barcode
 {
 	/// <summary>
-	/// <b>BarcodeDraw</b> deals with rendering a barcode using the associated
+	/// <c>BarcodeMetrics</c> defines the measurement metrics used to render
+	/// a barcode.
+	/// </summary>
+	[Serializable]
+	public struct BarcodeMetrics
+	{
+		#region Private Fields
+		private int _minWidth;
+		private int _maxWidth;
+		private int _minHeight;
+		private int _maxHeight;
+		private int _interGlyphSpacing;
+		#endregion
+
+		#region Public Constructors
+		/// <summary>
+		/// Initializes a new instance of <see cref="T:BarcodeMetrics"/> structure.
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		public BarcodeMetrics (int width, int height)
+		{
+			_minWidth = _maxWidth = width;
+			_minHeight = _maxHeight = height;
+			_interGlyphSpacing = -1;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of <see cref="T:BarcodeMetrics"/> structure.
+		/// </summary>
+		/// <param name="minWidth"></param>
+		/// <param name="maxWidth"></param>
+		/// <param name="height"></param>
+		public BarcodeMetrics (int minWidth, int maxWidth, int height)
+		{
+			_minWidth = minWidth;
+			_maxWidth = maxWidth;
+			_minHeight = _maxHeight = height;
+			_interGlyphSpacing = -1;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of <see cref="T:BarcodeMetrics"/> structure.
+		/// </summary>
+		/// <param name="minWidth"></param>
+		/// <param name="maxWidth"></param>
+		/// <param name="minHeight"></param>
+		/// <param name="maxHeight"></param>
+		public BarcodeMetrics (int minWidth, int maxWidth, int minHeight,
+			int maxHeight)
+		{
+			_minWidth = minWidth;
+			_maxWidth = maxWidth;
+			_minHeight = minHeight;
+			_maxHeight = maxHeight;
+			_interGlyphSpacing = -1;
+		}
+		#endregion
+
+		#region Public Properties
+		/// <summary>
+		/// Gets/sets the minimum bar width.
+		/// </summary>
+		public int MinWidth
+		{
+			get
+			{
+				return _minWidth;
+			}
+			set
+			{
+				_minWidth = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets/sets the maximum bar width.
+		/// </summary>
+		public int MaxWidth
+		{
+			get
+			{
+				return _maxWidth;
+			}
+			set
+			{
+				_maxWidth = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets/sets the minimum bar height.
+		/// </summary>
+		public int MinHeight
+		{
+			get
+			{
+				return _minHeight;
+			}
+			set
+			{
+				_minHeight = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets/sets the maximum bar height.
+		/// </summary>
+		public int MaxHeight
+		{
+			get
+			{
+				return _maxHeight;
+			}
+			set
+			{
+				_maxHeight = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets/sets the amount of inter-glyph spacing to apply.
+		/// </summary>
+		/// <remarks>
+		/// By default this is set to -1 which forces the barcode drawing
+		/// classes to use the default value specified by the symbology.
+		/// </remarks>
+		public int InterGlyphSpacing
+		{
+			get
+			{
+				return _interGlyphSpacing;
+			}
+			set
+			{
+				_interGlyphSpacing = value;
+			}
+		}
+		#endregion
+	}
+
+	/// <summary>
+	/// <c>BarcodeDraw</c> is an abstract base class for all barcode drawing
+	/// derived classes.
+	/// </summary>
+	public abstract class BarcodeDraw
+	{
+		#region Protected Constructors
+		/// <summary>
+		/// Initializes a new instance of <see cref="T:BarcodeDraw"/> class.
+		/// </summary>
+		protected BarcodeDraw ()
+		{
+		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Draws a fixed-pitch barcode for the specified text.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="barHeight">Height of the bar.</param>
+		/// <param name="barWidth">Width of the bar.</param>
+		/// <returns></returns>
+		public abstract Image Draw (string text, int barHeight, int barWidth);
+
+		/// <summary>
+		/// Draws a variable-pitched barcode for the specified text.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="barMinHeight">Height of the bar min.</param>
+		/// <param name="barMaxHeight">Height of the bar max.</param>
+		/// <param name="barMinWidth">Width of the bar min.</param>
+		/// <param name="barMaxWidth">Width of the bar max.</param>
+		/// <returns></returns>
+		public abstract Image Draw (string text, int barMinHeight, int barMaxHeight,
+			int barMinWidth, int barMaxWidth);
+
+		/// <summary>
+		/// Draws the specified text.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="interGlyphSpace">Amount of inter-glyph space (in pixels) to apply.</param>
+		/// <param name="barMinHeight">Height of the bar min.</param>
+		/// <param name="barMaxHeight">Height of the bar max.</param>
+		/// <param name="barMinWidth">Width of the bar min.</param>
+		/// <param name="barMaxWidth">Width of the bar max.</param>
+		/// <returns></returns>
+		public abstract Image Draw (string text, int interGlyphSpace, int barMinHeight,
+			int barMaxHeight, int barMinWidth, int barMaxWidth);
+
+		/// <summary>
+		/// Draws the specified text using the supplied barcode metrics.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="metrics">A <see cref="T:BarcodeMetrics"/> object.</param>
+		/// <returns></returns>
+		public Image Draw (string text, BarcodeMetrics metrics)
+		{
+			if (metrics.InterGlyphSpacing < 0)
+			{
+				return Draw (text, 
+					metrics.MinHeight, metrics.MaxHeight,
+					metrics.MinWidth, metrics.MaxWidth);
+			}
+			else
+			{
+				return Draw (text, metrics.InterGlyphSpacing,
+					metrics.MinHeight, metrics.MaxHeight,
+					metrics.MinWidth, metrics.MaxWidth);
+			}
+		}
+
+		/// <summary>
+		/// Draws the specified text using the default barcode metrics for
+		/// the specified maximum barcode height.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="maxBarHeight">The maximum bar height.</param>
+		/// <returns></returns>
+		public Image Draw (string text, int maxBarHeight)
+		{
+			BarcodeMetrics defaultMetrics = GetDefaultMetrics (maxBarHeight);
+			return Draw (text, defaultMetrics);
+		}
+
+		/// <summary>
+		/// Gets a <see cref="T:BarcodeMetrics"/> object containing default
+		/// settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns>A <see cref="T:BarcodeMetrics"/> object.</returns>
+		public abstract BarcodeMetrics GetDefaultMetrics (int maxHeight);
+		#endregion
+	}
+
+	/// <summary>
+	/// <b>BarcodeDrawBase</b> deals with rendering a barcode using the associated
 	/// glyph factory and optional checksum generator classes.
 	/// </summary>
 	/// <typeparam name="TGlyphFactory">A <see cref="T:GlyphFactory"/> derived
 	/// type.</typeparam>
 	/// <typeparam name="TChecksum">A <see cref="T:Checksum"/> derived type
 	/// </typeparam>
-	public abstract class BarcodeDraw<TGlyphFactory, TChecksum>
+	public abstract class BarcodeDrawBase<TGlyphFactory, TChecksum> : BarcodeDraw
 		where TGlyphFactory : GlyphFactory
 		where TChecksum : Checksum
 	{
@@ -35,7 +272,7 @@ namespace Zen.Barcode
 		/// Number of bits in each encoded glyph.
 		/// Set to <c>0</c> for variable length bit encoded glyphs.
 		/// </param>
-		protected BarcodeDraw (TGlyphFactory factory, int encodingBitCount)
+		protected BarcodeDrawBase (TGlyphFactory factory, int encodingBitCount)
 		{
 			_factory = factory;
 			_encodingBitCount = encodingBitCount;
@@ -50,7 +287,7 @@ namespace Zen.Barcode
 		/// Set to <c>0</c> for variable length bit encoded glyphs.
 		/// </param>
 		/// <param name="widthBitCount">Width of the width bit.</param>
-		protected BarcodeDraw (TGlyphFactory factory, int encodingBitCount,
+		protected BarcodeDrawBase (TGlyphFactory factory, int encodingBitCount,
 			int widthBitCount)
 		{
 			_factory = factory;
@@ -67,7 +304,7 @@ namespace Zen.Barcode
 		/// Number of bits in each encoded glyph.
 		/// Set to <c>0</c> for variable length bit encoded glyphs.
 		/// </param>
-		protected BarcodeDraw (TGlyphFactory factory, TChecksum checksum,
+		protected BarcodeDrawBase (TGlyphFactory factory, TChecksum checksum,
 			int encodingBitCount)
 		{
 			_factory = factory;
@@ -85,7 +322,7 @@ namespace Zen.Barcode
 		/// Set to <c>0</c> for variable length bit encoded glyphs.
 		/// </param>
 		/// <param name="widthBitCount">Width of the width bit.</param>
-		protected BarcodeDraw (TGlyphFactory factory, TChecksum checksum,
+		protected BarcodeDrawBase (TGlyphFactory factory, TChecksum checksum,
 			int encodingBitCount, int widthBitCount)
 		{
 			_factory = factory;
@@ -97,19 +334,19 @@ namespace Zen.Barcode
 
 		#region Public Methods
 		/// <summary>
-		/// Draws a fixed-pitch barcode for the specified text.
+		/// Overridden. Draws a fixed-pitch barcode for the specified text.
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <param name="barHeight">Height of the bar.</param>
 		/// <param name="barWidth">Width of the bar.</param>
 		/// <returns></returns>
-		public Image Draw (string text, int barHeight, int barWidth)
+		public override Image Draw (string text, int barHeight, int barWidth)
 		{
 			return Draw (text, barHeight, barHeight, barWidth, barWidth);
 		}
 
 		/// <summary>
-		/// Draws a variable-pitched barcode for the specified text.
+		/// Overridden. Draws a variable-pitched barcode for the specified text.
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <param name="barMinHeight">Height of the bar min.</param>
@@ -117,7 +354,7 @@ namespace Zen.Barcode
 		/// <param name="barMinWidth">Width of the bar min.</param>
 		/// <param name="barMaxWidth">Width of the bar max.</param>
 		/// <returns></returns>
-		public Image Draw (string text, int barMinHeight, int barMaxHeight,
+		public override Image Draw (string text, int barMinHeight, int barMaxHeight,
 			int barMinWidth, int barMaxWidth)
 		{
 			int interGlyphSpace = GetDefaultInterGlyphSpace (barMinWidth,
@@ -127,7 +364,7 @@ namespace Zen.Barcode
 		}
 
 		/// <summary>
-		/// Draws the specified text.
+		/// Overridden. Draws the specified text.
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <param name="interGlyphSpace">Amount of inter-glyph space (in pixels) to apply.</param>
@@ -136,7 +373,7 @@ namespace Zen.Barcode
 		/// <param name="barMinWidth">Width of the bar min.</param>
 		/// <param name="barMaxWidth">Width of the bar max.</param>
 		/// <returns></returns>
-		public Image Draw (string text, int interGlyphSpace, int barMinHeight, 
+		public override Image Draw (string text, int interGlyphSpace, int barMinHeight, 
 			int barMaxHeight, int barMinWidth, int barMaxWidth)
 		{
 			// Determine number of pixels required for final image

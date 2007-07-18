@@ -719,9 +719,9 @@ namespace Zen.Barcode
 			// Determine checksum
 			Glyph[] fullGlyph = Factory.GetGlyphs (text, false);
 			long checksum = Factory.GetRawGlyphIndex ((BarGlyph) (fullGlyph[0]));
-			for (int index = 0; index < fullGlyph.Length; ++index)
+			for (int index = 1; index < fullGlyph.Length; ++index)
 			{
-				checksum += ((index + 1) * Factory.GetRawGlyphIndex (
+				checksum += (index * Factory.GetRawGlyphIndex (
 					((BarGlyph)(fullGlyph[index]))));
 			}
 			checksum = checksum % 103;
@@ -749,7 +749,7 @@ namespace Zen.Barcode
 	/// that can render complete Code128 barcodes with checksum.
 	/// </summary>
 	public class Code128BarcodeDraw
-		: BarcodeDraw<Code128GlyphFactory, Code128Checksum>
+		: BarcodeDrawBase<Code128GlyphFactory, Code128Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -760,6 +760,19 @@ namespace Zen.Barcode
 		public Code128BarcodeDraw (Code128Checksum checksum)
 			: base (checksum.Factory, checksum, 11)
 		{
+		}
+		#endregion
+
+		#region Public Methods
+		/// <summary>
+		/// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object 
+		/// containing default settings for the specified maximum bar height.
+		/// </summary>
+		/// <param name="maxHeight">The maximum barcode height.</param>
+		/// <returns></returns>
+		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+		{
+			return new BarcodeMetrics (1, maxHeight);
 		}
 		#endregion
 
@@ -780,6 +793,22 @@ namespace Zen.Barcode
 			result.Add (Factory.GetRawGlyph (106));	// Stop
 			result.Add (Factory.GetRawGlyph (107));	// Terminator
 			return result.ToArray ();
+		}
+
+		/// <summary>
+		/// Overridden. Gets the length in pixels needed to render the 
+		/// specified barcode.
+		/// </summary>
+		/// <param name="barcode">Barcode glyphs to be analysed.</param>
+		/// <param name="interGlyphSpace">Amount of inter-glyph space.</param>
+		/// <param name="barMinWidth">Minimum bar width.</param>
+		/// <param name="barMaxWidth">Maximum bar width.</param>
+		/// <returns></returns>
+		protected override int GetBarcodeLength (Glyph[] barcode,
+			int interGlyphSpace, int barMinWidth, int barMaxWidth)
+		{
+			return base.GetBarcodeLength (barcode, interGlyphSpace,
+				barMinWidth, barMaxWidth) - (9 * barMinWidth);
 		}
 		#endregion
 	}

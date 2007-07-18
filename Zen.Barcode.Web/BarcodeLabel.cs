@@ -61,14 +61,14 @@ namespace Zen.Barcode.Web
 		[
 		Category ("Appearance"),
 		Description ("Gets/sets the barcode encoding system."),
-		DefaultValue ((int) EncodingSystem.Unknown)
+		DefaultValue ((int) BarcodeSymbology.Unknown)
 		]
-		public EncodingSystem BarcodeEncoding
+		public BarcodeSymbology BarcodeEncoding
 		{
 			get
 			{
 				object objState = ViewState["BarcodeEncoding"];
-				return (objState == null) ? EncodingSystem.Unknown : (EncodingSystem) objState;
+				return (objState == null) ? BarcodeSymbology.Unknown : (BarcodeSymbology) objState;
 			}
 			set
 			{
