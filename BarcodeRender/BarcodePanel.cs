@@ -17,7 +17,6 @@ namespace BarcodeRender
 	{
 		#region Private Fields
 		private BarcodeSymbology _symbology;
-		private string _text;
 		private int _maxBarHeight = 30;
 		#endregion
 
@@ -73,6 +72,29 @@ namespace BarcodeRender
 				if (base.Text != value)
 				{
 					base.Text = value;
+					RefreshBarcodeImage ();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the maximum height of the rendered barcode.
+		/// </summary>
+		/// <value>The maximum height of a barcode bar in pixels.</value>
+		[Category ("Appearance")]
+		[DefaultValue (30)]
+		[Description ("Gets/sets the maximum height of the rendered barcode bars.")]
+		public int MaxBarHeight
+		{
+			get
+			{
+				return _maxBarHeight;
+			}
+			set
+			{
+				if (_maxBarHeight != value)
+				{
+					_maxBarHeight = value;
 					RefreshBarcodeImage ();
 				}
 			}

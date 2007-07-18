@@ -138,6 +138,7 @@ namespace BarcodeRender
 		/// </summary>
 		/// <param name="symbology">The symbology.</param>
 		/// <param name="barcodeText">The barcode text.</param>
+		/// <param name="maxBarHeight">Height of the max bar.</param>
 		public SymbologyTestCase (BarcodeSymbology symbology, string barcodeText, int maxBarHeight)
 		{
 			_symbology = symbology;

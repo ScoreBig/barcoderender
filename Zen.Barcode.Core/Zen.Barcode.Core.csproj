@@ -55,6 +55,7 @@
     <Compile Include="CompositeGlyph.cs" />
     <Compile Include="Code128.cs" />
     <Compile Include="Code11.cs" />
+    <Compile Include="Code25.cs" />
     <Compile Include="Glyph.cs" />
     <Compile Include="GlyphFactory.cs" />
     <Compile Include="IBarGlyph.cs" />

@@ -21,6 +21,10 @@ namespace Zen.Barcode
 		private static Code11BarcodeDraw _code11WithChecksum;
 		private static CodeEan13BarcodeDraw _codeEan13WithChecksum;
 		private static CodeEan8BarcodeDraw _codeEan8WithChecksum;
+		private static Code25BarcodeDraw _code25StandardWithoutChecksum;
+		private static Code25BarcodeDraw _code25StandardWithChecksum;
+		private static Code25BarcodeDraw _code25InterleavedWithoutChecksum;
+		private static Code25BarcodeDraw _code25InterleavedWithChecksum;
 		#endregion
 
 		#region Public Properties
@@ -166,6 +170,78 @@ namespace Zen.Barcode
 				return _codeEan8WithChecksum;
 			}
 		}
+
+		/// <summary>
+		/// Gets an agent capable of rendering a Code 25 barcode without
+		/// checksum glyphs.
+		/// </summary>
+		/// <value>A <see cref="T:Code25BarcodeDraw"/> object.</value>
+		public static Code25BarcodeDraw Code25StandardWithoutChecksum
+		{
+			get
+			{
+				if (_code25StandardWithoutChecksum == null)
+				{
+					_code25StandardWithoutChecksum = new Code25BarcodeDraw (
+						Code25GlyphFactory.StandardInstance);
+				}
+				return _code25StandardWithoutChecksum;
+			}
+		}
+
+		/// <summary>
+		/// Gets an agent capable of rendering a Code 25 barcode with
+		/// added checksum glyphs.
+		/// </summary>
+		/// <value>A <see cref="T:Code25BarcodeDraw"/> object.</value>
+		public static Code25BarcodeDraw Code25StandardWithChecksum
+		{
+			get
+			{
+				if (_code25StandardWithChecksum == null)
+				{
+					_code25StandardWithChecksum = new Code25BarcodeDraw (
+						Code25Checksum.StandardInstance);
+				}
+				return _code25StandardWithChecksum;
+			}
+		}
+
+		/// <summary>
+		/// Gets an agent capable of rendering a Code 25 barcode without
+		/// checksum glyphs.
+		/// </summary>
+		/// <value>A <see cref="T:Code25BarcodeDraw"/> object.</value>
+		public static Code25BarcodeDraw Code25InterleavedWithoutChecksum
+		{
+			get
+			{
+				if (_code25InterleavedWithoutChecksum == null)
+				{
+					_code25InterleavedWithoutChecksum = new Code25BarcodeDraw (
+						Code25GlyphFactory.InterleavedInstance);
+				}
+				return _code25InterleavedWithoutChecksum;
+			}
+		}
+
+		/// <summary>
+		/// Gets an agent capable of rendering a Code 25 barcode with
+		/// added checksum glyphs.
+		/// </summary>
+		/// <value>A <see cref="T:Code25BarcodeDraw"/> object.</value>
+		public static Code25BarcodeDraw Code25InterleavedWithChecksum
+		{
+			get
+			{
+				if (_code25InterleavedWithChecksum == null)
+				{
+					_code25InterleavedWithChecksum = new Code25BarcodeDraw (
+						Code25Checksum.InterleavedInstance);
+				}
+				return _code25InterleavedWithChecksum;
+			}
+		}
 		#endregion
 
 		#region Public Methods
@@ -202,6 +278,14 @@ namespace Zen.Barcode
 					return CodeEan13WithChecksum;
 				case BarcodeSymbology.CodeEan8:
 					return CodeEan8WithChecksum;
+				case BarcodeSymbology.Code25StandardNC:
+					return Code25StandardWithoutChecksum;
+				case BarcodeSymbology.Code25StandardC:
+					return Code25StandardWithChecksum;
+				case BarcodeSymbology.Code25InterleavedNC:
+					return Code25InterleavedWithoutChecksum;
+				case BarcodeSymbology.Code25InterleavedC:
+					return Code25InterleavedWithChecksum;
 				default:
 					throw new ArgumentException (
 						Resources.BarcodeSymbologyInvalid, "symbology");
@@ -259,5 +343,25 @@ namespace Zen.Barcode
 		/// Code EAN-8 with checksum
 		/// </summary>
 		CodeEan8 = 8,
+
+		/// <summary>
+		/// Code 25 standard without checksum
+		/// </summary>
+		Code25StandardNC = 9,
+
+		/// <summary>
+		/// Code 25 standard with checksum
+		/// </summary>
+		Code25StandardC = 10,
+
+		/// <summary>
+		/// Code 25 interleaved without checksum
+		/// </summary>
+		Code25InterleavedNC = 11,
+
+		/// <summary>
+		/// Code 25 interleaved with checksum
+		/// </summary>
+		Code25InterleavedC = 12,
 	}
 }
