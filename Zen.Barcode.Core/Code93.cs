@@ -360,6 +360,25 @@ namespace Zen.Barcode
 			result.Add (Factory.GetRawGlyph ('|'));
 			return result.ToArray ();
 		}
+
+		/// <summary>
+		/// Overridden. Gets the length in pixels needed to render the specified barcode.
+		/// </summary>
+		/// <param name="barcode">Barcode glyphs to be analysed.</param>
+		/// <param name="interGlyphSpace">Amount of inter-glyph space.</param>
+		/// <param name="barMinWidth">Minimum barcode width.</param>
+		/// <param name="barMaxWidth">Maximum barcode width.</param>
+		/// <returns>The barcode width in pixels.</returns>
+		/// <remarks>
+		/// Currently this method does not account for any "quiet space"
+		/// around the barcode as dictated by each symbology standard.
+		/// </remarks>
+		protected override int GetBarcodeLength (Glyph[] barcode, 
+			int interGlyphSpace, int barMinWidth, int barMaxWidth)
+		{
+			return base.GetBarcodeLength (barcode, interGlyphSpace,
+				barMinWidth, barMaxWidth) - (8 * barMinWidth);
+		}
 		#endregion
 	}
 }
