@@ -562,8 +562,12 @@ namespace Zen.Barcode
 			for (index = 0; index < text.Length; ++index)
 			{
 				// Check for Set C
-				if (char.IsDigit (text[index]))
+				// NOTE: This check eliminates two digits per iteration
+				if (char.IsDigit (text[index]) &&
+					index < (text.Length - 1) &&
+					char.IsDigit (text[index + 1]))
 				{
+					++index;
 					if (state == BlockParserState.Free)
 					{
 						state = BlockParserState.UseSetC;
