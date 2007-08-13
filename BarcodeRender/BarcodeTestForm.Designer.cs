@@ -155,7 +155,8 @@
             "Code 25 Standard (No Checksum)",
             "Code 25 Standard (With Checksum)",
             "Code 25 Interleaved (No Checksum)",
-            "Code 25 Interleaved (With Checksum)"});
+            "Code 25 Interleaved (With Checksum)",
+            "Code PDF417 (With Checksum)"});
 			this.testSymbology.Location = new System.Drawing.Point (160, 57);
 			this.testSymbology.Name = "testSymbology";
 			this.testSymbology.Size = new System.Drawing.Size (191, 21);

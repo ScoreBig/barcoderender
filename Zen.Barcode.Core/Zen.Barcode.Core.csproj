@@ -52,6 +52,7 @@
     <Compile Include="Code93.cs" />
     <Compile Include="CodeEan13.cs" />
     <Compile Include="CodeEan8.cs" />
+    <Compile Include="CodePdf417.cs" />
     <Compile Include="CompositeGlyph.cs" />
     <Compile Include="Code128.cs" />
     <Compile Include="Code11.cs" />

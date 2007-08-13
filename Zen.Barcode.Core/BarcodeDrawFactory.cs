@@ -25,6 +25,7 @@ namespace Zen.Barcode
 		private static Code25BarcodeDraw _code25StandardWithChecksum;
 		private static Code25BarcodeDraw _code25InterleavedWithoutChecksum;
 		private static Code25BarcodeDraw _code25InterleavedWithChecksum;
+		private static CodePdf417BarcodeDraw _codePdf417WithChecksum;
 		#endregion
 
 		#region Public Properties
@@ -242,6 +243,23 @@ namespace Zen.Barcode
 				return _code25InterleavedWithChecksum;
 			}
 		}
+
+		/// <summary>
+		/// Gets an agent capable of rendering a Code PDF417 barcode with
+		/// added checksum glyphs.
+		/// </summary>
+		/// <value>A <see cref="T:Code25BarcodeDraw"/> object.</value>
+		public static CodePdf417BarcodeDraw CodePdf417WithChecksum
+		{
+			get
+			{
+				if (_codePdf417WithChecksum == null)
+				{
+					_codePdf417WithChecksum = new CodePdf417BarcodeDraw ();
+				}
+				return _codePdf417WithChecksum;
+			}
+		}
 		#endregion
 
 		#region Public Methods
@@ -286,6 +304,8 @@ namespace Zen.Barcode
 					return Code25InterleavedWithoutChecksum;
 				case BarcodeSymbology.Code25InterleavedC:
 					return Code25InterleavedWithChecksum;
+				case BarcodeSymbology.CodePdf417:
+					return CodePdf417WithChecksum;
 				default:
 					throw new ArgumentException (
 						Resources.BarcodeSymbologyInvalid, "symbology");
@@ -363,5 +383,10 @@ namespace Zen.Barcode
 		/// Code 25 interleaved with checksum
 		/// </summary>
 		Code25InterleavedC = 12,
+
+		/// <summary>
+		/// Code PDF 417 (2D symbology with variable error correction)
+		/// </summary>
+		CodePdf417 = 13,
 	}
 }
