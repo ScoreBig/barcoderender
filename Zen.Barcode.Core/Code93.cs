@@ -288,8 +288,8 @@ namespace Zen.Barcode
 			char secondCheck = GetChecksumChar (text, 15);
 
 			List<Glyph> result = new List<Glyph> ();
-			result.AddRange (Factory.GetGlyphs (firstCheck));
-			result.AddRange (Factory.GetGlyphs (secondCheck));
+			result.Add (Factory.GetRawGlyph (firstCheck));
+			result.Add (Factory.GetRawGlyph (secondCheck));
 			return result.ToArray ();
 		}
 		#endregion
