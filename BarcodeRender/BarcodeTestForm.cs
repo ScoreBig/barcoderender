@@ -682,6 +682,21 @@ namespace BarcodeRender
 			}
 		} 
 		#endregion
+
+		#region Image Export
+		private void exportImageToolStripMenuItem_Click (object sender, EventArgs e)
+		{
+			ExportBarcodeImagesForm export = new ExportBarcodeImagesForm();
+			if (export.ShowDialog () == DialogResult.OK)
+			{
+				ExportProgress.Start (
+					_testPlan,
+					export.RootFolder,
+					export.OverwriteFiles,
+					export.FlattenHierarchy);
+			}
+		}
+		#endregion
 		#endregion
 	}
 }

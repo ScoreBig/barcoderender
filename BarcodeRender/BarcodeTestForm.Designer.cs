@@ -59,6 +59,8 @@
 			this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator ();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem ();
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem ();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator ();
+			this.exportImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem ();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator ();
 			this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem ();
 			this.pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem ();
@@ -87,6 +89,7 @@
 			this.testTree = new System.Windows.Forms.TreeView ();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog ();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog ();
+			this.exportImageFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog ();
 			this.groupBox2.SuspendLayout ();
 			this.mainMenu.SuspendLayout ();
 			this.groupBox1.SuspendLayout ();
@@ -268,6 +271,8 @@
             this.toolStripSeparator,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.exportImageToolStripMenuItem,
             this.toolStripSeparator2,
             this.printToolStripMenuItem,
             this.pageSetupToolStripMenuItem,
@@ -284,7 +289,7 @@
 			this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
 			this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.newToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.newToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.newToolStripMenuItem.Text = "&New Test Plan";
 			this.newToolStripMenuItem.Click += new System.EventHandler (this.OnNewTestPlan);
 			// 
@@ -294,14 +299,14 @@
 			this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
 			this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.openToolStripMenuItem.Text = "&Open Test Plan";
 			this.openToolStripMenuItem.Click += new System.EventHandler (this.OnOpenTestPlan);
 			// 
 			// toolStripSeparator
 			// 
 			this.toolStripSeparator.Name = "toolStripSeparator";
-			this.toolStripSeparator.Size = new System.Drawing.Size (194, 6);
+			this.toolStripSeparator.Size = new System.Drawing.Size (200, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
@@ -309,21 +314,33 @@
 			this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
 			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.saveToolStripMenuItem.Text = "&Save Test Plan";
 			this.saveToolStripMenuItem.Click += new System.EventHandler (this.OnSaveTestPlan);
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.saveAsToolStripMenuItem.Text = "Save Test Plan &As";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler (this.OnSaveTestPlanAs);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size (200, 6);
+			// 
+			// exportImageToolStripMenuItem
+			// 
+			this.exportImageToolStripMenuItem.Name = "exportImageToolStripMenuItem";
+			this.exportImageToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
+			this.exportImageToolStripMenuItem.Text = "Export Barcode I&mages...";
+			this.exportImageToolStripMenuItem.Click += new System.EventHandler (this.exportImageToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size (194, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size (200, 6);
 			// 
 			// printToolStripMenuItem
 			// 
@@ -331,14 +348,14 @@
 			this.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.printToolStripMenuItem.Name = "printToolStripMenuItem";
 			this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.printToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.printToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.printToolStripMenuItem.Text = "&Print";
 			this.printToolStripMenuItem.Click += new System.EventHandler (this.OnPrint);
 			// 
 			// pageSetupToolStripMenuItem
 			// 
 			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
-			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.pageSetupToolStripMenuItem.Text = "Page Set&up";
 			this.pageSetupToolStripMenuItem.Click += new System.EventHandler (this.OnPageSetup);
 			// 
@@ -347,19 +364,19 @@
 			this.printPreviewToolStripMenuItem.Image = ((System.Drawing.Image) (resources.GetObject ("printPreviewToolStripMenuItem.Image")));
 			this.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler (this.OnPrintPreview);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size (194, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size (200, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size (197, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size (203, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			// 
 			// editToolStripMenuItem
@@ -533,6 +550,11 @@
 			this.saveFileDialog.Filter = "Barcode Test Plan files|*.btp|All files|*.*";
 			this.saveFileDialog.Title = "Save Barcode Test Plan";
 			// 
+			// exportImageFolderBrowserDialog
+			// 
+			this.exportImageFolderBrowserDialog.Description = "Select the folder to contain the exported images.";
+			this.exportImageFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.Personal;
+			// 
 			// BarcodeTestForm
 			// 
 			this.ClientSize = new System.Drawing.Size (694, 327);
@@ -605,5 +627,8 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem exportImageToolStripMenuItem;
+		private System.Windows.Forms.FolderBrowserDialog exportImageFolderBrowserDialog;
 	}
 }

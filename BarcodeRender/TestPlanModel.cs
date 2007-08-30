@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -8,6 +10,17 @@ using Zen.Barcode;
 
 namespace BarcodeRender
 {
+	/// <summary>
+	/// Notification delegate called during image export.
+	/// </summary>
+	/// <param name="current"></param>
+	/// <param name="total"></param>
+	/// <param name="operation"></param>
+	/// <param name="detail"></param>
+	/// <returns></returns>
+	public delegate bool ExportProgressHandler (int done, int total,
+		string operation, string detail);
+
 	/// <summary>
 	/// <c>SymbologyTestPlan</c> encapsulates a barcode test-plan
 	/// </summary>
@@ -119,7 +132,147 @@ namespace BarcodeRender
 					yield return testCase;
 				}
 			}
-		} 
+		}
+
+		/// <summary>
+		/// Exports the barcode images.
+		/// </summary>
+		/// <param name="folder">The root folder for export.</param>
+		/// <param name="overwriteFiles">if set to <c>true</c> [overwrite files].</param>
+		/// <param name="flattenHierarchy">if set to <c>true</c> [flatten hierarchy].</param>
+		/// <param name="maxBarHeight">Height of the max bar.</param>
+		public void ExportImages (string folder, bool overwriteFiles,
+			bool flattenHierarchy, int maxBarHeight,
+			ExportProgressHandler listener)
+		{
+			int done, total;
+			done = total = 0;
+			if (listener != null)
+			{
+				listener (done, total, "Initialising", "Scanning test plan");
+				foreach (SymbologyTestGroup group in GroupTests)
+				{
+					total += group.TestItems.Count;
+					listener (done, total, string.Empty, "Scanning test plan");
+				}
+			}
+
+			// Create root folder
+			if (!Directory.Exists (folder))
+			{
+				if (listener != null)
+				{
+					listener (done, total, string.Empty,
+						string.Format ("Creating root folder\n{0}", folder));
+				}
+				Directory.CreateDirectory (folder);
+			}
+
+			foreach (SymbologyTestGroup group in GroupTests)
+			{
+				if (listener != null)
+				{
+					listener (done, total, 
+						string.Format ("Processing {0} Tests", group.Symbology.ToString()),
+						"Initialising");
+				}
+
+				// Determine folder path for this file
+				string imagePath = flattenHierarchy ? folder :
+					Path.Combine (folder, group.Symbology.ToString ());
+				if (!flattenHierarchy && !Directory.Exists (imagePath))
+				{
+					if (listener != null)
+					{
+						listener (done, total, string.Empty,
+							string.Format ("Creating group folder\n{0}", folder));
+					}
+					Directory.CreateDirectory (imagePath);
+				}
+
+				foreach (SymbologyTestCase testCase in group.GetTestCases (maxBarHeight))
+				{
+					if (listener != null)
+					{
+						listener (done, total, string.Empty, testCase.BarcodeText);
+					}
+
+					// Determine file name
+					StringBuilder imageFileName = new StringBuilder ();
+					if (flattenHierarchy)
+					{
+						imageFileName.AppendFormat ("{0}-",
+							group.Symbology.ToString ());
+					}
+					imageFileName.Append (testCase.BarcodeText);
+
+					// Remove invalid filename characters from name
+					foreach (char c in Path.GetInvalidFileNameChars ())
+					{
+						imageFileName.Replace (c, 'x');
+					}
+
+					// Append file extension
+					imageFileName.Append (".jpg");
+
+					// Create full image path name
+					string imagePathName = Path.Combine (imagePath, imageFileName.ToString ());
+
+					// If we can't overwrite then check
+					if (!overwriteFiles &&
+						File.Exists (imagePathName))
+					{
+						++done;
+						if (listener != null)
+						{
+							listener (done, total, string.Empty, 
+								string.Format ("Skipped {0}: file exists.", imageFileName));
+						}
+						continue;
+					}
+					else if (File.Exists (imagePathName))
+					{
+						try
+						{
+							if (listener != null)
+							{
+								listener (done, total, string.Empty,
+									string.Format ("Deleting Existing File\n{0}.", imageFileName));
+							}
+							File.Delete (imagePathName);
+						}
+						catch (UnauthorizedAccessException)
+						{
+							if (listener != null)
+							{
+								listener (done, total, string.Empty,
+									string.Format ("Delete Failed - Checking Attributes.\n{0}.", imageFileName));
+							}
+							FileAttributes attribs = File.GetAttributes (imagePathName);
+							if ((attribs & FileAttributes.ReadOnly) != FileAttributes.Normal)
+							{
+								attribs = attribs &= ~FileAttributes.ReadOnly;
+								File.SetAttributes (imagePathName, attribs);
+							}
+						}
+					}
+
+					// Save image
+					if (listener != null)
+					{
+						listener (done, total, string.Empty,
+							string.Format ("Saving Barcode Image\n{0}.", imagePathName));
+					}
+					testCase.BarcodeImage.Save (imagePathName, ImageFormat.Jpeg);
+					++done;
+					if (listener != null)
+					{
+						listener (done, total, string.Empty,
+							string.Format ("Done\n{0}.", imagePathName));
+					}
+				}
+			}
+		}
 		#endregion
 	}
 
