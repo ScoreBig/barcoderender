@@ -24,9 +24,9 @@ namespace Zen.Barcode.Web
     /// For all of this to work the following line must be added to web.config
     /// in the httpHandler section
     /// <![CDATA[
-    /// <add verb="GET" path="*.Barcode" type="Zen.Barcode.Web.BarcodeImageHandler, Zen.Barcode.Web, Culture=Neutral, Version=2.0.1.0, PublicKeyToken=b5ae55aa76d2d9de" />
+    /// <add verb="GET" path="*.Barcode" type="Zen.Barcode.Web.BarcodeImageHandler, Zen.Barcode.Web, Culture=Neutral, Version=2.0.2.0, PublicKeyToken=b5ae55aa76d2d9de" />
     /// ]]>
-    /// The .NobleBarcode file extension will need to be associated with ASP.NET
+    /// The .Barcode file extension will need to be associated with ASP.NET
     /// from within IIS and the "Check if the file exists" checkbox must be cleared.
     /// </para>
     /// </summary>
@@ -168,6 +168,38 @@ namespace Zen.Barcode.Web
         }
         #endregion
 
+        #region Private Properties
+        private static Regex FileNameParser
+        {
+            get
+            {
+                if (_filenameParser == null)
+                {
+                    lock (syncParser)
+                    {
+                        if (_filenameParser == null)
+                        {
+                            // Create filename parser
+                            _filenameParser = new Regex(
+                                @"^(?<OriginalFilename>(?:
+                                (?:Barcode)(?:\x5b\s*
+                                (?<EncodingSystem>[0-9]*)\s*,\s*
+                                (?<BarMinHeight>[0-9]*)\s*,\s*
+                                (?<BarMaxHeight>[0-9]*)\s*,\s*
+                                (?<BarMinWidth>[0-9]*)\s*,\s*
+                                (?<BarMaxWidth>[0-9]*)\s*\x5d)?:
+                                (?<BarCodePayload>[0-9A-Z-.$/+%]*))):
+                                (?<HashCode>(?:[-])?[0-9]+)$",
+                                RegexOptions.Singleline | RegexOptions.Compiled |
+                                RegexOptions.IgnorePatternWhitespace);
+                        }
+                    }
+                }
+                return _filenameParser;
+            }
+        }
+        #endregion
+
         #region Private Methods
         private void DecodeFileName()
         {
@@ -184,31 +216,8 @@ namespace Zen.Barcode.Web
             StreamReader reader = new StreamReader(memStm, Encoding.UTF8);
             fileName = reader.ReadToEnd();
 
-            // Create filename parser
-            if (_filenameParser == null)
-            {
-                lock (syncParser)
-                {
-                    if (_filenameParser == null)
-                    {
-                        _filenameParser = new Regex(
-                            @"^(?<OriginalFilename>(?:
-							(?:Barcode)(?:\x5b
-							(?<EncodingSystem>[0-9])\s*,\s*
-							(?<BarMinHeight>[0-9])\s*,\s*
-							(?<BarMaxHeight>[0-9])\s*,\s*
-							(?<BarMinWidth>[0-9])\s*,\s*
-							(?<BarMaxWidth>[0-9])\s*\x5d)?:
-							(?<BarCodePayload>[0-9A-Z-.$/+%]*))):
-							(?<HashCode>(?:[-])?[0-9]+)",
-                            RegexOptions.Singleline | RegexOptions.Compiled |
-                            RegexOptions.IgnorePatternWhitespace);
-                    }
-                }
-            }
-
             // Lets see if we can parse the string
-            Match m = _filenameParser.Match(fileName);
+            Match m = FileNameParser.Match(fileName);
             if (!m.Success)
             {
                 throw new InvalidOperationException("Filename is not valid.");

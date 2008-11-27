@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Zen Barcode Core")]
-[assembly: AssemblyDescription("Barcode image rendering framework core.")]
+[assembly: AssemblyTitle("Zen Barcode Sample Site")]
+[assembly: AssemblyDescription("Simple web-site assembly demonstrating usage of barcode framework.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zen Design")]
 [assembly: AssemblyProduct("Zen Barcode")]
-[assembly: AssemblyCopyright("Copyright © Zen Design 2006 - 2008")]
+[assembly: AssemblyCopyright("Copyright © Zen Design 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dc2bb779-4f63-4d14-8db7-7865586c694a")]
+[assembly: Guid("3d5900ae-111a-45be-96b3-d9e4606ca793")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("2.0.3.0")]
-[assembly: AssemblyFileVersion("2.0.3.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
