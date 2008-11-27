@@ -1,24 +1,30 @@
-using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Drawing.Design;
-using System.IO;
-using System.Security.Permissions;
-using System.Text;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml;
-using System.Xml.XPath;
-using System.Xml.Xsl;
-
-using Zen.Barcode.Web.Xsl;
+//-----------------------------------------------------------------------
+// <copyright file="BarcodeXml.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode.Web
 {
-	/// <summary>
+    using System;
+    using System.Collections;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Drawing.Design;
+    using System.IO;
+    using System.Security.Permissions;
+    using System.Text;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+    using System.Xml.XPath;
+    using System.Xml.Xsl;
+
+    using Zen.Barcode.Web.Xsl;
+
+    /// <summary>
 	/// <b>BarcodeXml</b> web-control replaces <see cref="T:Xml"/> by 
 	/// automatically registering our custom extension object that is used to
 	/// translate design IDs and barcode text into image URIs suitable for use

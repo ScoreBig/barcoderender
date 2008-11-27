@@ -1,232 +1,238 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Web;
-
-using Zen.Barcode;
+//-----------------------------------------------------------------------
+// <copyright file="BarcodeImageHandler.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode.Web
 {
-	/// <summary>
-	/// <b>BarcodeImageHandler</b> is a custom ASP.NET HTTP Handler for
-	/// streaming bar-code images to a web-client.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// The bar-code symbology and size metrics are encoded into the image
-	/// filename by <see cref="T:Zen.Barcode.Web.BarcodeImageUrlBuilder"/>.
-	/// </para>
-	/// <para>
-	/// Currently the image format is fixed as JPEG.
-	/// </para>
-	/// <para>
-	/// For ultimate performance this is an asynchronous HTTP handler
-	/// with work performed on a thread-pooled thread.
-	/// </para>
-	/// </remarks>
-	public sealed class BarcodeImageHandler : IHttpAsyncHandler
-	{
-		#region Internal Classes
-		private class AsyncHandler : IAsyncResult
-		{
-			#region Private Fields
-			private HttpContext _context;
-			private HttpRequest _request;
-			private HttpResponse _response;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Drawing.Text;
+    using System.IO;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
 
-			private AsyncCallback _callback;
-			private object _state;
-			private ManualResetEvent _wait;
-			private bool _isCompleted;
-			private Exception _error;
-			#endregion
+    using Zen.Barcode;
 
-			#region Public Constructors
-			public AsyncHandler (HttpContext context, AsyncCallback callback,
-					object state)
-			{
-				_context = context;
-				_callback = callback;
-				_state = state;
-				_wait = new ManualResetEvent (false);
-			}
-			#endregion
+    /// <summary>
+    /// <b>BarcodeImageHandler</b> is a custom ASP.NET HTTP Handler for
+    /// streaming bar-code images to a web-client.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The bar-code symbology and size metrics are encoded into the image
+    /// filename by <see cref="T:Zen.Barcode.Web.BarcodeImageUrlBuilder"/>.
+    /// </para>
+    /// <para>
+    /// Currently the image format is fixed as JPEG.
+    /// </para>
+    /// <para>
+    /// For ultimate performance this is an asynchronous HTTP handler
+    /// with work performed on a thread-pooled thread.
+    /// </para>
+    /// </remarks>
+    public sealed class BarcodeImageHandler : IHttpAsyncHandler
+    {
+        #region Internal Classes
+        private class AsyncHandler : IAsyncResult
+        {
+            #region Private Fields
+            private HttpContext _context;
+            private HttpRequest _request;
+            private HttpResponse _response;
 
-			#region Public Methods
-			public void StartAsyncWork ()
-			{
-				ThreadPool.QueueUserWorkItem (new WaitCallback (StartAsyncTask), null);
-			}
+            private AsyncCallback _callback;
+            private object _state;
+            private ManualResetEvent _wait;
+            private bool _isCompleted;
+            private Exception _error;
+            #endregion
 
-			public void EndAsyncWork ()
-			{
-				// Wait for completion if we are still working
-				if (!_isCompleted)
-				{
-					_wait.WaitOne ();
-				}
+            #region Public Constructors
+            public AsyncHandler(HttpContext context, AsyncCallback callback,
+                    object state)
+            {
+                _context = context;
+                _callback = callback;
+                _state = state;
+                _wait = new ManualResetEvent(false);
+            }
+            #endregion
 
-				// Throw any error we have cached
-				if (_error != null)
-				{
-					throw _error;
-				}
-			}
-			#endregion
+            #region Public Methods
+            public void StartAsyncWork()
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(StartAsyncTask), null);
+            }
 
-			#region Private Methods
-			private void StartAsyncTask (object state)
-			{
-				try
-				{
-					// We want to respond to image requests of the form;
-					//
-					//	<encoded barcode>.Barcode
+            public void EndAsyncWork()
+            {
+                // Wait for completion if we are still working
+                if (!_isCompleted)
+                {
+                    _wait.WaitOne();
+                }
 
-					// Cache information from context
-					_request = _context.Request;
-					_response = _context.Response;
+                // Throw any error we have cached
+                if (_error != null)
+                {
+                    throw _error;
+                }
+            }
+            #endregion
 
-					// Filename is the encoded design ID
-					BarcodeImageUri uri = new BarcodeImageUri (_request.Url);
+            #region Private Methods
+            private void StartAsyncTask(object state)
+            {
+                try
+                {
+                    // We want to respond to image requests of the form;
+                    //
+                    //	<encoded barcode>.Barcode
 
-					// Lookup design and retrieve image data
-					// Stream JPEG image to client
-					_response.ContentType = "image/jpeg";
-					_response.Clear ();
-					_response.BufferOutput = true;
+                    // Cache information from context
+                    _request = _context.Request;
+                    _response = _context.Response;
 
-					// Get the object capable of rendering the barcode
-					BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology (
-						uri.EncodingScheme);
+                    // Filename is the encoded design ID
+                    BarcodeImageUri uri = new BarcodeImageUri(_request.Url);
 
-					// Render barcode and save directly onto response stream
-					using (Image image = drawObject.Draw (uri.Text,
-						uri.BarMinHeight, uri.BarMaxHeight,
-						uri.BarMinWidth, uri.BarMaxWidth))
-					{
-						image.Save (_response.OutputStream, ImageFormat.Jpeg);
-					}
-				}
-				catch (Exception e)
-				{
-					_error = e;
-				}
-				finally
-				{
-					_response.End ();
-					SetComplete ();
-				}
-			}
+                    // Lookup design and retrieve image data
+                    // Stream JPEG image to client
+                    _response.ContentType = "image/jpeg";
+                    _response.Clear();
+                    _response.BufferOutput = true;
 
-			private void SetComplete ()
-			{
-				// Mark task as complete and set handle
-				_isCompleted = true;
-				_wait.Set ();
+                    // Get the object capable of rendering the barcode
+                    BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(
+                        uri.EncodingScheme);
 
-				// If we have a callback method then call it
-				if (_callback != null)
-				{
-					_callback (this);
-				}
-			}
-			#endregion
+                    // Render barcode and save directly onto response stream
+                    using (Image image = drawObject.Draw(uri.Text,
+                        uri.BarMinHeight, uri.BarMaxHeight,
+                        uri.BarMinWidth, uri.BarMaxWidth))
+                    {
+                        image.Save(_response.OutputStream, ImageFormat.Jpeg);
+                    }
+                }
+                catch (Exception e)
+                {
+                    _error = e;
+                }
+                finally
+                {
+                    _response.End();
+                    SetComplete();
+                }
+            }
 
-			#region IAsyncResult Members
-			object IAsyncResult.AsyncState
-			{
-				get
-				{
-					return _state;
-				}
-			}
+            private void SetComplete()
+            {
+                // Mark task as complete and set handle
+                _isCompleted = true;
+                _wait.Set();
 
-			WaitHandle IAsyncResult.AsyncWaitHandle
-			{
-				get
-				{
-					return _wait;
-				}
-			}
+                // If we have a callback method then call it
+                if (_callback != null)
+                {
+                    _callback(this);
+                }
+            }
+            #endregion
 
-			bool IAsyncResult.CompletedSynchronously
-			{
-				get
-				{
-					return false;
-				}
-			}
+            #region IAsyncResult Members
+            object IAsyncResult.AsyncState
+            {
+                get
+                {
+                    return _state;
+                }
+            }
 
-			bool IAsyncResult.IsCompleted
-			{
-				get
-				{
-					return _isCompleted;
-				}
-			}
-			#endregion
-		}
-		#endregion
+            WaitHandle IAsyncResult.AsyncWaitHandle
+            {
+                get
+                {
+                    return _wait;
+                }
+            }
 
-		#region IHttpHandler Members
-		bool IHttpHandler.IsReusable
-		{
-			get
-			{
-				return true;
-			}
-		}
+            bool IAsyncResult.CompletedSynchronously
+            {
+                get
+                {
+                    return false;
+                }
+            }
 
-		void IHttpHandler.ProcessRequest (HttpContext context)
-		{
-			throw new InvalidOperationException ();
-		}
-		#endregion
+            bool IAsyncResult.IsCompleted
+            {
+                get
+                {
+                    return _isCompleted;
+                }
+            }
+            #endregion
+        }
+        #endregion
 
-		#region IHttpAsyncHandler Members
-		/// <summary>
-		/// Begins processing the image request.
-		/// </summary>
-		/// <param name="context">Current HTTP request context</param>
-		/// <param name="cb">Delegate called when processing is completed</param>
-		/// <param name="extraData">Application defined state</param>
-		/// <returns><see cref="T:System.IAsyncResult"/> used for tracking progress</returns>
-		IAsyncResult IHttpAsyncHandler.BeginProcessRequest (HttpContext context, AsyncCallback cb, object extraData)
-		{
-			AsyncHandler handler = new AsyncHandler (context, cb, extraData);
-			handler.StartAsyncWork ();
-			return handler;
-		}
+        #region IHttpHandler Members
+        bool IHttpHandler.IsReusable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
-		/// <summary>
-		/// Ends processing of an image request.
-		/// </summary>
-		/// <param name="result">
-		/// <see cref="T:System.IAsyncResult"/> obtained in a previous call to
-		/// <b>BeginProcessRequest</b>.
-		/// </param>
-		void IHttpAsyncHandler.EndProcessRequest (IAsyncResult result)
-		{
-			// Sanity checks
-			if (result == null)
-			{
-				throw new ArgumentNullException ("result");
-			}
-			AsyncHandler handler = result as AsyncHandler;
-			if (handler == null)
-			{
-				throw new ArgumentException ("Not IAsyncResult from this handler.");
-			}
+        void IHttpHandler.ProcessRequest(HttpContext context)
+        {
+            throw new InvalidOperationException();
+        }
+        #endregion
 
-			// Finish request processing
-			handler.EndAsyncWork ();
-		}
-		#endregion
-	}
+        #region IHttpAsyncHandler Members
+        /// <summary>
+        /// Begins processing the image request.
+        /// </summary>
+        /// <param name="context">Current HTTP request context</param>
+        /// <param name="cb">Delegate called when processing is completed</param>
+        /// <param name="extraData">Application defined state</param>
+        /// <returns><see cref="T:System.IAsyncResult"/> used for tracking progress</returns>
+        IAsyncResult IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback cb, object extraData)
+        {
+            AsyncHandler handler = new AsyncHandler(context, cb, extraData);
+            handler.StartAsyncWork();
+            return handler;
+        }
+
+        /// <summary>
+        /// Ends processing of an image request.
+        /// </summary>
+        /// <param name="result">
+        /// <see cref="T:System.IAsyncResult"/> obtained in a previous call to
+        /// <b>BeginProcessRequest</b>.
+        /// </param>
+        void IHttpAsyncHandler.EndProcessRequest(IAsyncResult result)
+        {
+            // Sanity checks
+            if (result == null)
+            {
+                throw new ArgumentNullException("result");
+            }
+            AsyncHandler handler = result as AsyncHandler;
+            if (handler == null)
+            {
+                throw new ArgumentException("Not IAsyncResult from this handler.");
+            }
+
+            // Finish request processing
+            handler.EndAsyncWork();
+        }
+        #endregion
+    }
 }

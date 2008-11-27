@@ -1,10 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="Code39.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode
 {
-	/// <summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Text;
+
+    /// <summary>
 	/// <b>Code39GlyphFactory</b> concrete implementation of 
 	/// <see cref="GlyphFactory"/> for providing Code 39 bar-code glyph
 	/// objects.
@@ -306,7 +313,7 @@ namespace Zen.Barcode
 	/// that can render complete Code39 barcodes with or without checksum.
 	/// </summary>
 	public class Code39BarcodeDraw
-		: BarcodeDrawBase<Code39GlyphFactory, Code39Checksum>
+		: BinaryPitchBarcodeDraw<Code39GlyphFactory, Code39Checksum>
 	{
 		#region Public Constructors
 		/// <summary>
@@ -336,12 +343,35 @@ namespace Zen.Barcode
 		/// containing default settings for the specified maximum bar height.
 		/// </summary>
 		/// <param name="maxHeight">The maximum barcode height.</param>
-		/// <returns></returns>
-		public override BarcodeMetrics GetDefaultMetrics (int maxHeight)
+        /// <returns>
+        /// A <see cref="T:BarcodeMetrics"/> object.
+        /// </returns>
+        public override BarcodeMetrics GetDefaultMetrics(int maxHeight)
 		{
 			return new BarcodeMetrics (1, 2, maxHeight);
 		}
-		#endregion
+
+        /// <summary>
+        /// Overridden. Gets a <see cref="T:BarcodeMetrics"/> object containing the print
+        /// metrics needed for printing a barcode of the specified physical
+        /// size on a device operating at the specified resolution.
+        /// </summary>
+        /// <param name="desiredBarcodeDimensions">The desired barcode dimensions in hundredth of an inch.</param>
+        /// <param name="printResolution">The print resolution in pixels per inch.</param>
+        /// <param name="barcodeCharLength">Length of the barcode in characters.</param>
+        /// <returns>
+        /// A <see cref="T:BarcodeMetrics"/> object.
+        /// </returns>
+        public override BarcodeMetrics GetPrintMetrics(
+            Size desiredBarcodeDimensions, Size printResolution,
+            int barcodeCharLength)
+        {
+            int maxHeight = desiredBarcodeDimensions.Height * printResolution.Height / 100;
+            int narrowBarWidth = (printResolution.Width * desiredBarcodeDimensions.Width) /
+                (100 * (10 + (barcodeCharLength * 9)));
+            return new BarcodeMetrics(narrowBarWidth, narrowBarWidth * 2, maxHeight);
+        }
+        #endregion
 
 		#region Protected Methods
 		/// <summary>

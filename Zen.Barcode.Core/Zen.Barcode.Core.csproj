@@ -45,7 +45,9 @@
     <Compile Include="BarcodeDraw.cs" />
     <Compile Include="BarcodeDrawFactory.cs" />
     <Compile Include="BarGlyph.cs" />
+    <Compile Include="BinaryPitchBarcodeDraw.cs" />
     <Compile Include="BinaryPitchGlyph.cs" />
+    <Compile Include="BinaryPitchVaryLengthBarcodeDraw.cs" />
     <Compile Include="BinaryPitchVaryLengthGlyph.cs" />
     <Compile Include="Checksum.cs" />
     <Compile Include="Code39.cs" />

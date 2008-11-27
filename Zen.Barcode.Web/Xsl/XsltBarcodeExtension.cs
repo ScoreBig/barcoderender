@@ -1,11 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
+//-----------------------------------------------------------------------
+// <copyright file="XsltBarcodeExtension.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+				
 namespace Zen.Barcode.Web.Xsl
 {
-	/// <summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Text;
+
+    /// <summary>
 	/// <b>XsltBarcodeExtension</b> provides a handful of custom functions 
 	/// that are callable from XSLT style-sheets and allow barcode URIs to
 	/// be encoded in an XSLT style-sheet output.

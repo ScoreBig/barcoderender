@@ -82,17 +82,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.Code39BarcodeDraw">
-    <Position X="8" Y="13" Width="2.5" />
+    <Position X="8" Y="20.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Code39.cs</FileName>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAACAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.Code93BarcodeDraw">
-    <Position X="11" Y="13" Width="1.75" />
+    <Position X="11" Y="20.5" Width="1.75" />
     <TypeIdentifier>
       <FileName>Code93.cs</FileName>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAACAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.BinaryPitchVaryLengthGlyph">
@@ -103,8 +103,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Zen.Barcode.BarcodeDraw&lt;TGlyphFactory, TChecksum&gt;">
-    <Position X="12.5" Y="7.75" Width="1.5" />
+  <Class Name="Zen.Barcode.BarcodeDrawBase&lt;TGlyphFactory, TChecksum&gt;">
+    <Position X="12.5" Y="10" Width="1.5" />
     <TypeIdentifier>
       <FileName>BarcodeDraw.cs</FileName>
       <HashCode>ACAAAAAAQACBAgAAIAgACgAAKEAAAAgAABADAAAAEBA=</HashCode>
@@ -114,24 +114,24 @@
     </Compartments>
   </Class>
   <Class Name="Zen.Barcode.BarcodeDrawFactory">
-    <Position X="8.25" Y="7.75" Width="2.25" />
+    <Position X="8.25" Y="8" Width="2.25" />
     <TypeIdentifier>
       <FileName>BarcodeDrawFactory.cs</FileName>
-      <HashCode>AAAoAAQEAQSAgAAgAAAECAAAAAAAAAAAAAIAAAAAIAA=</HashCode>
+      <HashCode>AIAowAQEAQSAgAAwAAAECAAAAgBAQCAAAEIAAAAIIAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.Code11BarcodeDraw">
-    <Position X="15.75" Y="13" Width="2.5" />
+    <Position X="5" Y="20.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Code11.cs</FileName>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAACAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.Code128BarcodeDraw">
-    <Position X="13.25" Y="13" Width="2" />
+    <Position X="13.25" Y="20.5" Width="2" />
     <TypeIdentifier>
       <FileName>Code128.cs</FileName>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAACAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.Code11Checksum">
@@ -178,11 +178,19 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Zen.Barcode.CodeEan13BarcodeDraw">
-    <Position X="18.75" Y="13" Width="1.5" />
+    <Position X="18.75" Y="20.5" Width="2" />
     <TypeIdentifier>
       <FileName>CodeEan13.cs</FileName>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAACAAAAAAAAAAAAAABAAAAIEAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
+    <InheritanceLine Type="Zen.Barcode.BarcodeDrawBase&lt;TGlyphFactory, TChecksum&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="13.25" Y="14.002" />
+        <Point X="13.25" Y="20.14" />
+        <Point X="19.75" Y="20.14" />
+        <Point X="19.75" Y="20.5" />
+      </Path>
+    </InheritanceLine>
   </Class>
   <Class Name="Zen.Barcode.Code128Glyph" Collapsed="true">
     <Position X="4.75" Y="9" Width="1.5" />
@@ -210,6 +218,60 @@
     <TypeIdentifier>
       <FileName>Code11.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAFAAAAAAAAAICAQAQAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zen.Barcode.BarcodeDraw">
+    <Position X="12.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>BarcodeDraw.cs</FileName>
+      <HashCode>AAAACAAAAAAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zen.Barcode.CodeEan8BarcodeDraw">
+    <Position X="21.25" Y="20.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>CodeEan8.cs</FileName>
+      <HashCode>ACAACAAAAAAAAAAAAAABAAAAIEAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <InheritanceLine Type="Zen.Barcode.BarcodeDrawBase&lt;TGlyphFactory, TChecksum&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="13.25" Y="14.002" />
+        <Point X="13.25" Y="20.129" />
+        <Point X="22.25" Y="20.129" />
+        <Point X="22.25" Y="20.5" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="Zen.Barcode.Code25BarcodeDraw">
+    <Position X="15.75" Y="20.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Code25.cs</FileName>
+      <HashCode>ACAACAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zen.Barcode.CodePdf417BarcodeDraw" Collapsed="true">
+    <Position X="14.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodePdf417.cs</FileName>
+      <HashCode>KBiOWTGMgYUABgAZAgQJAEIYHBidAbiYCpRAYYBgDYA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Zen.Barcode.BinaryPitchBarcodeDraw&lt;TGlyphFactory, TChecksum&gt;">
+    <Position X="7.5" Y="15.5" Width="3.5" />
+    <TypeIdentifier>
+      <FileName>BinaryPitchBarcodeDraw.cs</FileName>
+      <HashCode>AAAAAAAAAACEAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zen.Barcode.BinaryPitchVaryLengthBarcodeDraw&lt;TGlyphFactory, TChecksum&gt;">
+    <Position X="4.25" Y="18.25" Width="4" />
+    <TypeIdentifier>
+      <FileName>BinaryPitchVaryLengthBarcodeDraw.cs</FileName>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
 </ClassDiagram>

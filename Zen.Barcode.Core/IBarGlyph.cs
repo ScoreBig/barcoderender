@@ -1,23 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="IBarGlyph.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode
 {
-	/// <summary>
-	/// <c>IBarGlyph</c> extends <see cref="T:IGlyph"/> by specifying a bit
-	/// encoding for a given character. The bits indicate where bars are
-	/// drawn.
-	/// </summary>
-	public interface IBarGlyph : IGlyph
-	{
-		/// <summary>
-		/// Gets the bit encoding.
-		/// </summary>
-		/// <value>The bit encoding.</value>
-		short BitEncoding
-		{
-			get;
-		}
-	}
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// <c>IBarGlyph</c> extends <see cref="T:Zen.Barcode.IGlyph"/> by 
+    /// specifying a bit encoding for a given character. 
+    /// The bits indicate where bars are drawn.
+    /// </summary>
+    public interface IBarGlyph : IGlyph
+    {
+        /// <summary>
+        /// Gets the bit encoding.
+        /// </summary>
+        /// <value>The bit encoding.</value>
+        short BitEncoding
+        {
+            get;
+        }
+    }
 }

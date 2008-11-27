@@ -1,10 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+//-----------------------------------------------------------------------
+// <copyright file="BinaryPitchGlyph.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode
 {
-	/// <summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
 	/// <b>BinaryPitchGlyph</b> represents a two-state variable pitched
 	/// barcode glyph characters (Code 3 of 9 is a good example) where
 	/// character bars or spaces can be one of two widths.
@@ -17,7 +23,7 @@ namespace Zen.Barcode
 
 		#region Public Constructors
 		/// <summary>
-		/// Initialises a new instance of the <see cref="BinaryPitchGlyph"/>
+		/// Initialises a new instance of the <see cref="Zen.Barcode.BinaryPitchGlyph"/>
 		/// class.
 		/// </summary>
 		/// <param name="character">The character.</param>

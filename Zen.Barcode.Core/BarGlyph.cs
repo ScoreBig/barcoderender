@@ -5,8 +5,8 @@ using System.Text;
 namespace Zen.Barcode
 {
 	/// <summary>
-	/// <b>BarGlyph</b> extends the <see cref="T:Glyph"/> base class and adds
-	/// a bit-encoding to describe a bar-code glyph.
+	/// <b>BarGlyph</b> extends the <see cref="T:Zen.Barcode.Glyph"/> base
+	/// class and adds a bit-encoding to describe a bar-code glyph.
 	/// </summary>
 	public class BarGlyph : Glyph, IBarGlyph
 	{
@@ -16,7 +16,8 @@ namespace Zen.Barcode
 
 		#region Public Constructors
 		/// <summary>
-		/// Initialises a new instance of the <see cref="T:Glyph"/> class with the specified bit encoding.
+		/// Initialises a new instance of the <see cref="T:Zen.Barcode.Glyph"/> 
+		/// class with the specified bit encoding.
 		/// </summary>
 		/// <param name="character">Character represented by glyph.</param>
 		/// <param name="bitEncoding">The bit-encoding value for this character.</param>
@@ -31,7 +32,7 @@ namespace Zen.Barcode
 		/// <summary>
 		/// Gets the bit encoding for this glyph.
 		/// </summary>
-		/// <value>A <see cref="T:short"/> representing the bit encoding.</value>
+		/// <value>A <see cref="T:System.Int16"/> representing the bit encoding.</value>
 		public short BitEncoding
 		{
 			get

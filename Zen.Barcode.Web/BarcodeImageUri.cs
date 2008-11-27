@@ -1,192 +1,198 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
+//-----------------------------------------------------------------------
+// <copyright file="BarcodeImageUri.cs" company="Zen Design">
+//     Copyright (c) Zen Design 2008. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zen.Barcode.Web
 {
-	/// <summary>
-	/// <para>
-	/// This class is used to generate URIs which when requested by the client
-	/// will result in a barcode image being streamed from the database as a
-	/// standard JPEG file.
-	/// </para>
-	/// <para>
-	/// For all of this to work the following line must be added to web.config
-	/// in the httpHandler section
-	/// <![CDATA[
-	/// <add verb="GET" path="*.Barcode" type="Zen.Barcode.Web.BarcodeImageHandler, Zen.Barcode.Web, Culture=Neutral, Version=2.0.1.0, PublicKeyToken=b5ae55aa76d2d9de" />
-	/// ]]>
-	/// The .NobleBarcode file extension will need to be associated with ASP.NET
-	/// from within IIS and the "Check if the file exists" checkbox must be cleared.
-	/// </para>
-	/// </summary>
-	public class BarcodeImageUri
-	{
-		#region Private Fields
-		private string _fileName;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
 
-		private string _text;
+    /// <summary>
+    /// <para>
+    /// This class is used to generate URIs which when requested by the client
+    /// will result in a barcode image being streamed from the database as a
+    /// standard JPEG file.
+    /// </para>
+    /// <para>
+    /// For all of this to work the following line must be added to web.config
+    /// in the httpHandler section
+    /// <![CDATA[
+    /// <add verb="GET" path="*.Barcode" type="Zen.Barcode.Web.BarcodeImageHandler, Zen.Barcode.Web, Culture=Neutral, Version=2.0.1.0, PublicKeyToken=b5ae55aa76d2d9de" />
+    /// ]]>
+    /// The .NobleBarcode file extension will need to be associated with ASP.NET
+    /// from within IIS and the "Check if the file exists" checkbox must be cleared.
+    /// </para>
+    /// </summary>
+    public class BarcodeImageUri
+    {
+        #region Private Fields
+        private string _fileName;
 
-		private BarcodeSymbology _encodingScheme;
-		private int _barMinHeight = 30;
-		private int _barMaxHeight = 30;
-		private int _barMinWidth = 1;
-		private int _barMaxWidth = 1;
+        private string _text;
 
-		private static object syncParser = new object ();
-		private static Regex _filenameParser;
-		#endregion
+        private BarcodeSymbology _encodingScheme;
+        private int _barMinHeight = 30;
+        private int _barMaxHeight = 30;
+        private int _barMinWidth = 1;
+        private int _barMaxWidth = 1;
 
-		#region Public Constructors
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BarcodeImageUri"/> class.
-		/// </summary>
-		/// <param name="uri">The URI.</param>
-		public BarcodeImageUri (Uri uri)
-		{
-			// Extract filename from URI
-			string path = uri.AbsolutePath;
-			string fileName = path;
-			int index = path.LastIndexOf ('/');
-			if (index != -1)
-			{
-				fileName = path.Substring (index + 1);
-			}
-			_fileName = fileName;
+        private static object syncParser = new object();
+        private static Regex _filenameParser;
+        #endregion
 
-			// Decode the filename
-			DecodeFileName ();
-		}
+        #region Public Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BarcodeImageUri"/> class.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        public BarcodeImageUri(Uri uri)
+        {
+            // Extract filename from URI
+            string path = uri.AbsolutePath;
+            string fileName = path;
+            int index = path.LastIndexOf('/');
+            if (index != -1)
+            {
+                fileName = path.Substring(index + 1);
+            }
+            _fileName = fileName;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BarcodeImageUri"/> class.
-		/// </summary>
-		/// <param name="fileName">Name of the file.</param>
-		public BarcodeImageUri (string fileName)
-		{
-			// Cache the filename
-			_fileName = fileName;
+            // Decode the filename
+            DecodeFileName();
+        }
 
-			// Decode filename
-			DecodeFileName ();
-		}
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BarcodeImageUri"/> class.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        public BarcodeImageUri(string fileName)
+        {
+            // Cache the filename
+            _fileName = fileName;
 
-		#region Public Properties
-		/// <summary>
-		/// Gets the name of the file.
-		/// </summary>
-		/// <value>The name of the file.</value>
-		public string FileName
-		{
-			get
-			{
-				return _fileName;
-			}
-		}
+            // Decode filename
+            DecodeFileName();
+        }
+        #endregion
 
-		/// <summary>
-		/// Gets the text.
-		/// </summary>
-		/// <value>The text.</value>
-		public string Text
-		{
-			get
-			{
-				return _text;
-			}
-		}
+        #region Public Properties
+        /// <summary>
+        /// Gets the name of the file.
+        /// </summary>
+        /// <value>The name of the file.</value>
+        public string FileName
+        {
+            get
+            {
+                return _fileName;
+            }
+        }
 
-		/// <summary>
-		/// Gets the encoding scheme.
-		/// </summary>
-		/// <value>The encoding scheme.</value>
-		public BarcodeSymbology EncodingScheme
-		{
-			get
-			{
-				return _encodingScheme;
-			}
-		}
+        /// <summary>
+        /// Gets the text.
+        /// </summary>
+        /// <value>The text.</value>
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+        }
 
-		/// <summary>
-		/// Gets the height of the bar min.
-		/// </summary>
-		/// <value>The height of the bar min.</value>
-		public int BarMinHeight
-		{
-			get
-			{
-				return _barMinHeight;
-			}
-		}
+        /// <summary>
+        /// Gets the encoding scheme.
+        /// </summary>
+        /// <value>The encoding scheme.</value>
+        public BarcodeSymbology EncodingScheme
+        {
+            get
+            {
+                return _encodingScheme;
+            }
+        }
 
-		/// <summary>
-		/// Gets the height of the bar max.
-		/// </summary>
-		/// <value>The height of the bar max.</value>
-		public int BarMaxHeight
-		{
-			get
-			{
-				return _barMaxHeight;
-			}
-		}
+        /// <summary>
+        /// Gets the height of the bar min.
+        /// </summary>
+        /// <value>The height of the bar min.</value>
+        public int BarMinHeight
+        {
+            get
+            {
+                return _barMinHeight;
+            }
+        }
 
-		/// <summary>
-		/// Gets the width of the bar min.
-		/// </summary>
-		/// <value>The width of the bar min.</value>
-		public int BarMinWidth
-		{
-			get
-			{
-				return _barMinWidth;
-			}
-		}
+        /// <summary>
+        /// Gets the height of the bar max.
+        /// </summary>
+        /// <value>The height of the bar max.</value>
+        public int BarMaxHeight
+        {
+            get
+            {
+                return _barMaxHeight;
+            }
+        }
 
-		/// <summary>
-		/// Gets the width of the bar max.
-		/// </summary>
-		/// <value>The width of the bar max.</value>
-		public int BarMaxWidth
-		{
-			get
-			{
-				return _barMaxWidth;
-			}
-		}
-		#endregion
+        /// <summary>
+        /// Gets the width of the bar min.
+        /// </summary>
+        /// <value>The width of the bar min.</value>
+        public int BarMinWidth
+        {
+            get
+            {
+                return _barMinWidth;
+            }
+        }
 
-		#region Private Methods
-		private void DecodeFileName ()
-		{
-			string fileName = Path.GetFileNameWithoutExtension (_fileName);
+        /// <summary>
+        /// Gets the width of the bar max.
+        /// </summary>
+        /// <value>The width of the bar max.</value>
+        public int BarMaxWidth
+        {
+            get
+            {
+                return _barMaxWidth;
+            }
+        }
+        #endregion
 
-			// Remove file extension and convert from base64
-			byte[] encryptedFileName = HttpServerUtility.UrlTokenDecode (
-				fileName);
+        #region Private Methods
+        private void DecodeFileName()
+        {
+            string fileName = Path.GetFileNameWithoutExtension(_fileName);
 
-			// Create memory stream backed against encrypted form
-			MemoryStream memStm = new MemoryStream (encryptedFileName);
+            // Remove file extension and convert from base64
+            byte[] encryptedFileName = HttpServerUtility.UrlTokenDecode(
+                fileName);
 
-			// Read from crypto-stream via stream reader in UTF8
-			StreamReader reader = new StreamReader (memStm, Encoding.UTF8);
-			fileName = reader.ReadToEnd ();
+            // Create memory stream backed against encrypted form
+            MemoryStream memStm = new MemoryStream(encryptedFileName);
 
-			// Create filename parser
-			if (_filenameParser == null)
-			{
-				lock (syncParser)
-				{
-					if (_filenameParser == null)
-					{
-						_filenameParser = new Regex (
-							@"^(?<OriginalFilename>(?:
+            // Read from crypto-stream via stream reader in UTF8
+            StreamReader reader = new StreamReader(memStm, Encoding.UTF8);
+            fileName = reader.ReadToEnd();
+
+            // Create filename parser
+            if (_filenameParser == null)
+            {
+                lock (syncParser)
+                {
+                    if (_filenameParser == null)
+                    {
+                        _filenameParser = new Regex(
+                            @"^(?<OriginalFilename>(?:
 							(?:Barcode)(?:\x5b
 							(?<EncodingSystem>[0-9])\s*,\s*
 							(?<BarMinHeight>[0-9])\s*,\s*
@@ -195,61 +201,61 @@ namespace Zen.Barcode.Web
 							(?<BarMaxWidth>[0-9])\s*\x5d)?:
 							(?<BarCodePayload>[0-9A-Z-.$/+%]*))):
 							(?<HashCode>(?:[-])?[0-9]+)",
-							RegexOptions.Singleline | RegexOptions.Compiled |
-							RegexOptions.IgnorePatternWhitespace);
-					}
-				}
-			}
+                            RegexOptions.Singleline | RegexOptions.Compiled |
+                            RegexOptions.IgnorePatternWhitespace);
+                    }
+                }
+            }
 
-			// Lets see if we can parse the string
-			Match m = _filenameParser.Match (fileName);
-			if (!m.Success)
-			{
-				throw new InvalidOperationException ("Filename is not valid.");
-			}
+            // Lets see if we can parse the string
+            Match m = _filenameParser.Match(fileName);
+            if (!m.Success)
+            {
+                throw new InvalidOperationException("Filename is not valid.");
+            }
 
-			// Validate the hash-code.
-			string originalFilename = m.Result ("${OriginalFilename}");
-			string hashCode = m.Result ("${HashCode}");
-			if (originalFilename.GetHashCode () != Int32.Parse (hashCode))
-			{
-				throw new InvalidOperationException ("Filename is not valid.");
-			}
+            // Validate the hash-code.
+            string originalFilename = m.Result("${OriginalFilename}");
+            string hashCode = m.Result("${HashCode}");
+            if (originalFilename.GetHashCode() != Int32.Parse(hashCode))
+            {
+                throw new InvalidOperationException("Filename is not valid.");
+            }
 
-			// Determine encoding system
-			string encoding = m.Result ("${EncodingSystem}");
-			if (!string.IsNullOrEmpty (encoding))
-			{
-				_encodingScheme = (BarcodeSymbology) Int32.Parse (encoding);
-			}
+            // Determine encoding system
+            string encoding = m.Result("${EncodingSystem}");
+            if (!string.IsNullOrEmpty(encoding))
+            {
+                _encodingScheme = (BarcodeSymbology) Int32.Parse(encoding);
+            }
 
-			// Determine barcode height
-			string barMinHeight = m.Result ("${BarMinHeight}");
-			if (!string.IsNullOrEmpty (barMinHeight))
-			{
-				_barMinHeight = Int32.Parse (barMinHeight);
-			}
-			string barMaxHeight = m.Result ("${BarMaxHeight}");
-			if (!string.IsNullOrEmpty (barMaxHeight))
-			{
-				_barMaxHeight = Int32.Parse (barMaxHeight);
-			}
+            // Determine barcode height
+            string barMinHeight = m.Result("${BarMinHeight}");
+            if (!string.IsNullOrEmpty(barMinHeight))
+            {
+                _barMinHeight = Int32.Parse(barMinHeight);
+            }
+            string barMaxHeight = m.Result("${BarMaxHeight}");
+            if (!string.IsNullOrEmpty(barMaxHeight))
+            {
+                _barMaxHeight = Int32.Parse(barMaxHeight);
+            }
 
-			// Determine barcode width
-			string barMinWidth = m.Result ("${BarMinWidth}");
-			if (!string.IsNullOrEmpty (barMinWidth))
-			{
-				_barMinWidth = Int32.Parse (barMinWidth);
-			}
-			string barMaxWidth = m.Result ("${BarMaxWidth}");
-			if (!string.IsNullOrEmpty (barMaxWidth))
-			{
-				_barMaxWidth = Int32.Parse (barMaxWidth);
-			}
+            // Determine barcode width
+            string barMinWidth = m.Result("${BarMinWidth}");
+            if (!string.IsNullOrEmpty(barMinWidth))
+            {
+                _barMinWidth = Int32.Parse(barMinWidth);
+            }
+            string barMaxWidth = m.Result("${BarMaxWidth}");
+            if (!string.IsNullOrEmpty(barMaxWidth))
+            {
+                _barMaxWidth = Int32.Parse(barMaxWidth);
+            }
 
-			// Parse the barcode off the end of this string
-			_text = m.Result ("${BarCodePayload}");
-		}
-		#endregion
-	}
+            // Parse the barcode off the end of this string
+            _text = m.Result("${BarCodePayload}");
+        }
+        #endregion
+    }
 }
