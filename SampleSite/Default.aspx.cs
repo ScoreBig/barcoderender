@@ -26,12 +26,15 @@ namespace Zen.SampleSite
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Setup data-source for symbology dropdown
-            List<string> symbologyDataSource = new List<string>(
-                Enum.GetNames(typeof(BarcodeSymbology)));
-            symbologyDataSource.Remove("Unknown");
-            barcodeSymbology.DataSource = symbologyDataSource;
-            barcodeSymbology.DataBind();
+            if (!IsPostBack)
+            {
+                // Setup data-source for symbology dropdown
+                List<string> symbologyDataSource = new List<string>(
+                    Enum.GetNames(typeof(BarcodeSymbology)));
+                symbologyDataSource.Remove("Unknown");
+                barcodeSymbology.DataSource = symbologyDataSource;
+                barcodeSymbology.DataBind();
+            }
         }
 
         protected void updateButton_Click(object sender, EventArgs e)
