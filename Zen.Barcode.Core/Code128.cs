@@ -413,7 +413,7 @@ namespace Zen.Barcode
 					new Code128Glyph ('@', '@', (char)32, 0x636),
 					new Code128Glyph ('A', 'A', (char)33, 0x518),
 					new Code128Glyph ('B', 'B', (char)34, 0x458),
-					new Code128Glyph ('C', 'C', (char)35, 0x486),
+					new Code128Glyph ('C', 'C', (char)35, 0x446),
 					new Code128Glyph ('D', 'D', (char)36, 0x588),
 					new Code128Glyph ('E', 'E', (char)37, 0x468),
 					new Code128Glyph ('F', 'F', (char)38, 0x462),

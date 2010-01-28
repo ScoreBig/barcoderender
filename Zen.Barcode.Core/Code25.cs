@@ -178,16 +178,16 @@ namespace Zen.Barcode
 			{
 				_glyphs = new BarGlyph[]
 				{
-					new VaryLengthGlyph ('0', 0x59, 7),
-					new VaryLengthGlyph ('1', 0x6B, 7),
-					new VaryLengthGlyph ('2', 0x4B, 7),
-					new VaryLengthGlyph ('3', 0x65, 7),
-					new VaryLengthGlyph ('4', 0x5B, 7),
-					new VaryLengthGlyph ('5', 0x6D, 7),
-					new VaryLengthGlyph ('6', 0x4D, 7),
-					new VaryLengthGlyph ('7', 0x53, 7),
-					new VaryLengthGlyph ('8', 0x69, 7),
-					new VaryLengthGlyph ('9', 0x49, 7),
+					new VaryLengthGlyph ('0', 6, 5),
+					new VaryLengthGlyph ('1', 17, 5),
+					new VaryLengthGlyph ('2', 9, 5),
+					new VaryLengthGlyph ('3', 24, 5),
+					new VaryLengthGlyph ('4', 5, 5),
+					new VaryLengthGlyph ('5', 20, 5),
+					new VaryLengthGlyph ('6', 12, 5),
+					new VaryLengthGlyph ('7', 3, 5),
+					new VaryLengthGlyph ('8', 18, 5),
+					new VaryLengthGlyph ('9', 10, 5),
 					new VaryLengthGlyph ('-', 0x0A, 4),
 					new VaryLengthGlyph ('*', 0x0D, 4)
 				};
@@ -385,11 +385,30 @@ namespace Zen.Barcode
 		protected override Glyph[] GetFullBarcode (string text)
 		{
 			List<Glyph> result = new List<Glyph> ();
+
+			// If text is odd length
+			if (Factory is Code25InterleavedGlyphFactory)
+			{
+				bool isOddLength = false;
+				if ((text.Length % 2) == 1)
+				{
+					isOddLength = true;
+				}
+
+				// Interleaved 2 of 5 can only encode even number of digits
+				if (isOddLength)
+				{
+					text = "0" + text;
+				}
+			}
+
 			result.AddRange (Factory.GetGlyphs (text));
 			if (Checksum != null)
 			{
 				result.AddRange (Checksum.GetChecksum (text));
 			}
+
+			// Add start/stop glyphs
 			result.Insert (0, Factory.GetRawGlyph ('-'));
 			result.Add (Factory.GetRawGlyph ('*'));
 			return result.ToArray ();
@@ -411,6 +430,113 @@ namespace Zen.Barcode
 			{
 				return 0;
 			}
+		}
+
+		/// <summary>
+		/// Gets the length in pixels needed to render the specified barcode.
+		/// </summary>
+		/// <param name="barcode">Barcode glyphs to be analysed.</param>
+		/// <param name="interGlyphSpace">Amount of inter-glyph space.</param>
+		/// <param name="barMinWidth">Minimum barcode width.</param>
+		/// <param name="barMaxWidth">Maximum barcode width.</param>
+		/// <returns>The barcode width in pixels.</returns>
+		/// <remarks>
+		/// Currently this method does not account for any "quiet space"
+		/// around the barcode as dictated by each symbology standard.
+		/// </remarks>
+		protected override int GetBarcodeLength(
+			Glyph[] barcode, int interGlyphSpace, int barMinWidth, int barMaxWidth)
+		{
+			if (!(Factory is Code25InterleavedGlyphFactory))
+			{
+				return base.GetBarcodeLength(barcode, interGlyphSpace, barMinWidth, barMaxWidth);
+			}
+
+			return (((barcode.Length - 2) * 7) + 8) * barMinWidth;
+		}
+
+		/// <summary>
+		/// Renders the barcode bars.
+		/// </summary>
+		/// <param name="barcode">A collection of <see cref="T:Zen.Barcode.Glyph"/> objects representing the
+		/// barcode to be rendered.</param>
+		/// <param name="dc">A <see cref="T:System.Drawing.Graphics"/> representing the draw context.</param>
+		/// <param name="bounds">The bounding rectangle.</param>
+		/// <param name="interGlyphSpace">The inter glyph space in pixels.</param>
+		/// <param name="barMinHeight">Minimum bar height in pixels.</param>
+		/// <param name="barMinWidth">Small bar width in pixels.</param>
+		/// <param name="barMaxWidth">Large bar width in pixels.</param>
+		/// <remarks>
+		/// By default this method renders each glyph by calling the
+		/// <see cref="M:RenderBar"/> method, applying the specified
+		/// inter-glyph spacing as necessary.
+		/// </remarks>
+		protected override void RenderBars(Glyph[] barcode, Graphics dc, Rectangle bounds, int interGlyphSpace, int barMinHeight, int barMinWidth, int barMaxWidth)
+		{
+			// Standard Code 2 of 5 can be rendered via base class
+			if (!(Factory is Code25InterleavedGlyphFactory))
+			{
+				base.RenderBars(barcode, dc, bounds, interGlyphSpace, barMinHeight, barMinWidth, barMaxWidth);
+				return;
+			}
+
+			// Interleaved version needs custom rendering support
+
+			int barOffset = 0;
+			for (int index = 0; index < barcode.Length; )
+			{
+				BarGlyph glyph = (BarGlyph)barcode[index];
+				int height = GetGlyphHeight(glyph, barMinHeight, bounds.Height);
+
+				if (index == 0 || index == (barcode.Length - 1))
+				{
+					RenderBar(index, glyph, dc, bounds, ref barOffset, barMinHeight,
+						barMinWidth, barMaxWidth);
+					++index;
+				}
+				else
+				{
+					// We need to render two glyphs at the same time
+					int encodingBitCount = 5;
+					BarGlyph firstGlyph = (BarGlyph)barcode[index];
+					BarGlyph secondGlyph = (BarGlyph)barcode[index +1];
+
+					// Get the bit encoding for each glyph
+
+					for (int bitIndex = encodingBitCount - 1; bitIndex >= 0; --bitIndex)
+					{
+						int bitMask = (1 << bitIndex);
+						if ((firstGlyph.BitEncoding & bitMask) != 0)
+						{
+							dc.FillRectangle(Brushes.Black, barOffset, bounds.Top,
+								barMinWidth * 2, height);
+							barOffset += barMinWidth * 2;
+						}
+						else
+						{
+							dc.FillRectangle(Brushes.Black, barOffset, bounds.Top,
+								barMinWidth, height);
+							barOffset += barMinWidth;
+						}
+
+						if ((secondGlyph.BitEncoding & bitMask) != 0)
+						{
+							barOffset += barMinWidth * 2;
+						}
+						else
+						{
+							barOffset += barMinWidth;
+						}
+					}
+
+					// Advance to next pair
+					index += 2;
+				}
+
+				// Account for inter glyph spacing
+				barOffset += interGlyphSpace;
+			}
+			
 		}
 		#endregion
 	}

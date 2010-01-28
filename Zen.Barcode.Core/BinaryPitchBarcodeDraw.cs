@@ -157,21 +157,22 @@ namespace Zen.Barcode
             return EncodingBitCount;
         }
 
-        /// <summary>
-        /// Overridden. Renders the specified glyph.
-        /// </summary>
-        /// <param name="glyph">A <see cref="T:Glyph"/> to be rendered.</param>
-        /// <param name="dc">A <see cref="T:Graphics"/> representing the device context.</param>
-        /// <param name="bounds">The bounding rectangle.</param>
-        /// <param name="barOffset">The bar offset in pixels.</param>
-        /// <param name="barMinHeight">Minimum bar height in pixels.</param>
-        /// <param name="barMinWidth">Minimum bar width.</param>
-        /// <param name="barMaxWidth">Maximum bar width.</param>
-        /// <exception cref="T:InvalidOperationException">
-        /// Thrown if the encoding bit count is zero or variable-pitch
-        /// bar rendering is attempted.
-        /// </exception>
-        protected override void RenderBar(BarGlyph glyph, Graphics dc,
+		/// <summary>
+		/// Overridden. Renders the specified glyph.
+		/// </summary>
+		/// <param name="glyphIndex">Index of the glyph.</param>
+		/// <param name="glyph">A <see cref="T:Glyph"/> to be rendered.</param>
+		/// <param name="dc">A <see cref="T:Graphics"/> representing the device context.</param>
+		/// <param name="bounds">The bounding rectangle.</param>
+		/// <param name="barOffset">The bar offset in pixels.</param>
+		/// <param name="barMinHeight">Minimum bar height in pixels.</param>
+		/// <param name="barMinWidth">Minimum bar width.</param>
+		/// <param name="barMaxWidth">Maximum bar width.</param>
+		/// <exception cref="T:InvalidOperationException">
+		/// Thrown if the encoding bit count is zero or variable-pitch
+		/// bar rendering is attempted.
+		/// </exception>
+        protected override void RenderBar(int glyphIndex, BarGlyph glyph, Graphics dc,
             Rectangle bounds, ref int barOffset, int barMinHeight,
             int barMinWidth, int barMaxWidth)
         {
