@@ -425,7 +425,7 @@ namespace Zen.Barcode
 					new Code128Glyph ('L', 'L', (char)44, 0x46E),
 					new Code128Glyph ('M', 'M', (char)45, 0x5D8),
 					new Code128Glyph ('N', 'N', (char)46, 0x5C6),
-					new Code128Glyph ('O', 'O', (char)47, 0x4E6),
+					new Code128Glyph ('O', 'O', (char)47, 0x476),
 					new Code128Glyph ('P', 'P', (char)48, 0x776),
 					new Code128Glyph ('Q', 'Q', (char)49, 0x68E),
 					new Code128Glyph ('R', 'R', (char)50, 0x62E),
