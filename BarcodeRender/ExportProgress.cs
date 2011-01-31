@@ -101,6 +101,13 @@ namespace BarcodeRender
 
 		public bool UpdateProgress (int done, int total, string operation, string detail)
 		{
+			// Issue callback on UI thread as required.
+			if (InvokeRequired)
+			{
+				ExportProgressHandler handler = new ExportProgressHandler(UpdateProgress);
+				return (bool)Invoke(handler, done, total, operation, detail);
+			}
+
 			if (IsDisposed || _cancelled)
 			{
 				if (!IsDisposed)
@@ -108,13 +115,6 @@ namespace BarcodeRender
 					Close ();
 				}
 				return false;
-			}
-
-			// Issue callback on UI thread as required.
-			if (InvokeRequired)
-			{
-				ExportProgressHandler handler = new ExportProgressHandler (UpdateProgress);
-				return (bool) Invoke (handler, done, total, operation, detail);
 			}
 
 			// Update progress bar
