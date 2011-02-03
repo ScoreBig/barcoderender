@@ -244,29 +244,47 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 						File="[ReportServerFolder]rsreportserver.config"
 						ElementPath="/Configuration"
 						Node="element"
+						On="install"
+						Action="create"
 						Name="ReportItems"
 						Sequence="1">
 		</util:XmlConfig>
 		<util:XmlConfig Id="RsReportServerReportItem"
 						File="[ReportServerFolder]rsreportserver.config"
-						ElementId="RsReportServerConfig"
+						ElementPath="/Configuration/ReportItems"
+						Node="element"
+						On="install"
+						Action="create"
 						Name="ReportItem"
 						Sequence="2">
+		  <util:XmlConfig Id="RsReportServerReportItemName"
+						  File="[ReportServerFolder]rsreportserver.config"
+						  ElementId="RsReportServerReportItem"
+						  Name="Name"
+						  Value="Barcode"
+						  Sequence="3" />
+		  <util:XmlConfig Id="RsReportServerReportItemType"
+						  File="[ReportServerFolder]rsreportserver.config"
+						  ElementId="RsReportServerReportItem"
+						  Name="Type"
+						  Value="Zen.Barcode.SSRS.BarcodeImageReportItem, Zen.Barcode.SSRS"
+						  Sequence="4" />
 		</util:XmlConfig>
-		<util:XmlConfig Id="RsReportServerReportItemName"
+		<util:XmlConfig Id="RsReportServerReportItemRemove"
 						File="[ReportServerFolder]rsreportserver.config"
-						ElementId="RsReportServerReportItem"
-						Name="Name"
-						Value="Barcode"
-						Sequence="3" />
-		<util:XmlConfig Id="RsReportServerReportItemType"
-						File="[ReportServerFolder]rsreportserver.config"
-						ElementId="RsReportServerReportItem"
-						Name="Type"
-						Value="Zen.Barcode.SSRS.BarcodeImageReportItem, Zen.Barcode.SSRS"
-						Sequence="4" />
+						ElementPath="//ReportItem[\[]@Name=&quot;Barcode&quot;[\]]"
+						Node="element"
+						On="uninstall"
+						Action="delete"
+						Sequence="1">
+		</util:XmlConfig>
 
 		<!--
+		NOTE: The public key blob here is based on the key in this solution.
+		If you change the key (so you can build a private version) then you
+		will need to use sn.exe to get the full public key and replace the
+		key blob below.
+		
 		<CodeGroup 
 		   class="UnionCodeGroup" 
 		   version="1" 
@@ -283,17 +301,22 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 							  5082f1cb" />
 		</CodeGroup>
 		-->
-		<util:XmlConfig Id="RsSrvPolicyConfig"
+		<util:XmlConfig Id="RsSrvPolicyCodeGroupRemove"
 						File="[ReportServerFolder]rssrvpolicy.config"
-						ElementPath="/configuration/mscorlib/security/policy/PolicyLevel/CodeGroup/CodeGroup[\[]@PermissionSetName=&quot;Execution&quot;[\]]"
+						ElementPath="//CodeGroup[\[]@Name=&quot;ZenBarcodeFullTrust&quot;[\]]"
 						Node="element"
+						On="uninstall"
+						Action="delete"
 						Sequence="1">
 		</util:XmlConfig>
 		<util:XmlConfig Id="RsSrvPolicyCodeGroup"
 						File="[ReportServerFolder]rssrvpolicy.config"
-						ElementId="RsSrvPolicyConfig"
-						Name="CodeGroup"
-						Sequence="2">
+						ElementPath="//CodeGroup[\[]@PermissionSetName=&quot;Execution&quot;[\]][\[]IMembershipCondition[\[]@Zone=&quot;MyComputer&quot;[\]][\]]"
+						Node="element"
+						On="install"
+						Action="create"
+						Sequence="1"
+						Name="CodeGroup">
 		  <util:XmlConfig Id="RsSrvPolicyCodeGroupClass"
 						  File="[ReportServerFolder]rssrvpolicy.config"
 						  ElementId="RsSrvPolicyCodeGroup"
@@ -327,7 +350,10 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 		</util:XmlConfig>
 		<util:XmlConfig Id="RsSrvPolicyMembership"
 						File="[ReportServerFolder]rssrvpolicy.config"
-						ElementId="RsSrvPolicyCodeGroup"
+						ElementPath="//CodeGroup[\[]@Name=&quot;ZenBarcodeFullTrust&quot;[\]]"
+						Node="element"
+						On="install"
+						Action="create"
 						Name="IMembershipCondition"
 						Sequence="4">
 		  <util:XmlConfig Id="RsSrvPolicyMembershipClass"
