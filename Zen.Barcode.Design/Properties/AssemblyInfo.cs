@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Zen Barcode Designer")]
-[assembly: AssemblyDescription("Zen barcode image rendering framework designer.")]
+[assembly: AssemblyDescription("Barcode Rendering Framework design-time components.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zen Design")]
+[assembly: AssemblyCompany("Zen Design Corp")]
 [assembly: AssemblyProduct("Zen Barcode")]
-[assembly: AssemblyCopyright("Copyright © Zen Design 2007, 2008")]
+[assembly: AssemblyCopyright("Copyright © Zen Design 2007 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.3.0")]
-[assembly: AssemblyFileVersion("2.0.3.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.2.0.0")]

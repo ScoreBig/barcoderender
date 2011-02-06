@@ -1,4 +1,10 @@
-﻿namespace Zen.Barcode.SSRS
+﻿//-----------------------------------------------------------------------
+// <copyright file="BarcodeImageReportItem.cs" company="Zen Design Corp">
+//     Copyright © Zen Design Corp 2011. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace Zen.Barcode.SSRS
 {
 	using System;
 	using System.Drawing.Imaging;

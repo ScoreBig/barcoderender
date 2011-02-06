@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------
-// <copyright file="BarcodeXml.cs" company="Zen Design">
-//     Copyright (c) Zen Design 2008. All rights reserved.
+// <copyright file="BarcodeXml.cs" company="Zen Design Corp">
+//     Copyright © Zen Design Corp 2008 - 2011. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ namespace Zen.Barcode.Web
 	/// </summary>
 	[
 	ToolboxData ("<{0}:BarcodeXml runat=server></{0}:BarcodeXml>"),
-	Designer ("Zen.Barcode.Web.Design.BarcodeXmlDesigner, Zen.Barcode.Design, Culture=Neutral, Version=2.0.1.0, PublicKeyToken=b5ae55aa76d2d9de"),
+	Designer ("Zen.Barcode.Web.Design.BarcodeXmlDesigner, Zen.Barcode.Design, Culture=Neutral, Version=2.1.0.0, PublicKeyToken=b5ae55aa76d2d9de"),
 	DefaultProperty ("DocumentSource"), 
 	PersistChildren (false, true), 
 	ControlBuilder (typeof (XmlBuilder))//, 

@@ -7,11 +7,11 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Zen Barcode Web Rendering")]
-[assembly: AssemblyDescription("Barcode image rendering framework for ASP.NET.")]
+[assembly: AssemblyDescription("Barcode Rendering Framework extensions for ASP.NET")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zen Design")]
+[assembly: AssemblyCompany("Zen Design Corp")]
 [assembly: AssemblyProduct("Zen Barcode")]
-[assembly: AssemblyCopyright("Copyright © Zen Design 2006 - 2008")]
+[assembly: AssemblyCopyright("Copyright © Zen Design 2006 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using System.Web.UI;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.3.0")]
-[assembly: AssemblyFileVersion("2.0.3.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.2.0.0")]

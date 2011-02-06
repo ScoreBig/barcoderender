@@ -1,4 +1,10 @@
-﻿namespace Zen.Barcode.SSRS.Design
+﻿//-----------------------------------------------------------------------
+// <copyright file="BarcodeImageEditor.cs" company="Zen Design Corp">
+//     Copyright © Zen Design Corp 2011. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace Zen.Barcode.SSRS.Design
 {
 	using System;
 	using System.Collections.Generic;

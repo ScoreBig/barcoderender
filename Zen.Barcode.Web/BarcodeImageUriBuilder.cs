@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------
-// <copyright file="BarcodeImageUriBuilder.cs" company="Zen Design">
-//     Copyright (c) Zen Design 2008. All rights reserved.
+// <copyright file="BarcodeImageUriBuilder.cs" company="Zen Design Corp">
+//     Copyright © Zen Design Corp 2008 - 2011. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
