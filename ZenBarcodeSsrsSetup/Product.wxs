@@ -2,12 +2,11 @@
 <!--
 **** PLEASE NOTE THIS INSTALLER IS NOT YET COMPLETE!!!!! ****
 **** TODO LIST ***
-1. Modify rsreportdesigner.config file when installing designtime components
-2. Test install/uninstall
-3. Test patching (small and minor)
-4. Test upgrading (major)
+1. Test patching (small and minor)
+2. Test upgrading (major)
+3. Add UI for SSRS Instance selection
 
-**** You will need at least WiX 3.6.1210.0 to build this ****
+**** You will need at least WiX 3.6.1321.0 to build this ****
 **** You will need SSRS2008 and VS2008 to build this ****
 
 WiX installer capable of installing the Zen Barcode components to a SQL Server
@@ -57,11 +56,11 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
 	 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
-	 RequiredVersion="3.6.1210.0">
+	 RequiredVersion="3.6.1321.0">
   <Product Id="{A3DFB31A-5968-47BF-9332-B5BEFEBC256C}"
-		   Name="Zen Barcode for Reporting Services"
+		   Name="Zen Barcode for Reporting Services v$(var.InstallVersion)"
 		   Language="1033"
-		   Version="1.0.0.0"
+		   Version="$(var.InstallVersion)"
 		   Manufacturer="Zen Design"
 		   UpgradeCode="{C286DC9B-26E3-44EB-BB56-C88CFC6BDCA9}">
 	<Package InstallerVersion="200"
@@ -240,9 +239,9 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 		   <ReportItem Name="Barcode" Type="Zen.Barcode.SSRS.BarcodeImageReportItem, Zen.Barcode.SSRS"/>
 		</ReportItems>
 		-->
-		<util:XmlConfig Id="RsReportServerConfig"
+		<util:XmlConfig Id="RsReportServerReportItemsAdd"
 						File="[ReportServerFolder]rsreportserver.config"
-						ElementPath="/Configuration"
+						ElementPath="/Configuration/Extensions"
 						Node="element"
 						On="install"
 						Action="create"
@@ -251,7 +250,7 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 		</util:XmlConfig>
 		<util:XmlConfig Id="RsReportServerReportItem"
 						File="[ReportServerFolder]rsreportserver.config"
-						ElementPath="/Configuration/ReportItems"
+						ElementPath="/Configuration/Extensions/ReportItems"
 						Node="element"
 						On="install"
 						Action="create"
@@ -272,18 +271,28 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 		</util:XmlConfig>
 		<util:XmlConfig Id="RsReportServerReportItemRemove"
 						File="[ReportServerFolder]rsreportserver.config"
-						ElementPath="//ReportItem[\[]@Name=&quot;Barcode&quot;[\]]"
+						ElementPath="/Configuration/Extensions/ReportItems"
+						VerifyPath="/Configuration/Extensions/ReportItems/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]"
 						Node="element"
 						On="uninstall"
 						Action="delete"
-						Sequence="1">
-		</util:XmlConfig>
+						Name="ReportItem"
+						Sequence="1"/>
+		<util:XmlConfig Id="RsReportServerReportItemsRemove"
+						File="[ReportServerFolder]rsreportserver.config"
+						ElementPath="/Configuration/Extensions"
+						VerifyPath="/Configuration/Extensions/ReportItems[\[]not(*)[\]]"
+						Node="element"
+						On="uninstall"
+						Action="delete"
+						Name="ReportItems"
+						Sequence="2"/>
 
 		<!--
 		NOTE: The public key blob here is based on the key in this solution.
 		If you change the key (so you can build a private version) then you
-		will need to use sn.exe to get the full public key and replace the
-		key blob below.
+		will need to use sn.exe -Tp <assemblyName> to get the full public key
+		and replace the key blob below.
 		
 		<CodeGroup 
 		   class="UnionCodeGroup" 
@@ -301,14 +310,6 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 							  5082f1cb" />
 		</CodeGroup>
 		-->
-		<util:XmlConfig Id="RsSrvPolicyCodeGroupRemove"
-						File="[ReportServerFolder]rssrvpolicy.config"
-						ElementPath="//CodeGroup[\[]@Name=&quot;ZenBarcodeFullTrust&quot;[\]]"
-						Node="element"
-						On="uninstall"
-						Action="delete"
-						Sequence="1">
-		</util:XmlConfig>
 		<util:XmlConfig Id="RsSrvPolicyCodeGroup"
 						File="[ReportServerFolder]rssrvpolicy.config"
 						ElementPath="//CodeGroup[\[]@PermissionSetName=&quot;Execution&quot;[\]][\[]IMembershipCondition[\[]@Zone=&quot;MyComputer&quot;[\]][\]]"
@@ -375,6 +376,16 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 						  Value="002400000480000094000000060200000024000052534131000400000100010057fead0aec16252de4b14e772ccadcc845428b276e6fdb3802c0e0218bd6028ca2f5d8c69f5387766df9d058a7dd7cd826bd60565ce21973bcea99e7ae8e997bb87cb743057152334bb720062c218a8e23c29a8c2b62538710d191cb84d85ff733cf921ae83e1ac227555dda968f6d2e73d403bf7e043dfa392173c45082f1cb"
 						  Sequence="5" />
 		</util:XmlConfig>
+		<util:XmlConfig Id="RsSrvPolicyCodeGroupRemove"
+						File="[ReportServerFolder]rssrvpolicy.config"
+						ElementPath="//CodeGroup[\[]@PermissionSetName=&quot;Execution&quot;[\]][\[]IMembershipCondition[\[]@Zone=&quot;MyComputer&quot;[\]][\]]"
+						VerifyPath="//CodeGroup[\[]@Name=&quot;ZenBarcodeFullTrust&quot;[\]]"
+						Node="element"
+						Name="CodeGroup"
+						On="uninstall"
+						Action="delete"
+						Sequence="1">
+		</util:XmlConfig>
 	  </Component>
 	</DirectoryRef>
   </Fragment>
@@ -411,6 +422,61 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 			  Name="Zen.Barcode.SSRS.dll"
 			  Checksum="yes"
 			  KeyPath="yes" />
+
+		<!--
+		<ReportItems>
+			<ReportItem Name="Barcode" Type="Zen.Barcode.SSRS.BarcodeImageReportItem, Zen.Barcode.SSRS" />
+		</ReportItems>
+		-->
+		<util:XmlConfig Id="VsBarcodeReportItemsAdd"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions"
+						Name="ReportItems"
+						Action="create"
+						Node="element"
+						On="install"
+						Sequence="1"
+						VerifyPath="/Configuration/Extensions/ReportItems/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]" />
+		<util:XmlConfig Id="VsBarcodeReportItemAdd"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions/ReportItems"
+						Name="ReportItem"
+						Action="create"
+						Node="element"
+						On="install"
+						Sequence="2"
+						VerifyPath="/Configuration/Extensions/ReportItems/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]">
+		  <util:XmlConfig Id="VsBarcodeReportItemName"
+						  ElementId="VsBarcodeReportItemAdd"
+						  File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						  Name="Name"
+						  Value="Barcode"
+						  Sequence="3" />
+		  <util:XmlConfig Id="VsBarcodeReportItemType"
+						  ElementId="VsBarcodeReportItemAdd"
+						  File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						  Name="Type"
+						  Value="Zen.Barcode.SSRS.BarcodeImageReportItem, Zen.Barcode.SSRS"
+						  Sequence="3" />
+		</util:XmlConfig>
+		<util:XmlConfig Id="VsBarcodeReportItemRemove"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions/ReportItems"
+						Name="ReportItem"
+						Action="delete"
+						Node="element"
+						On="uninstall"
+						Sequence="1"
+						VerifyPath="/Configuration/Extensions/ReportItems/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]" />
+		<util:XmlConfig Id="VsBarcodeReportItemsRemove"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions"
+						VerifyPath="/Configuration/Extensions/ReportItems[\[]not(*)[\]]"
+						Node="element"
+						On="uninstall"
+						Action="delete"
+						Name="ReportItems"
+						Sequence="2"/>
 	  </Component>
 	</DirectoryRef>
   </Fragment>
@@ -423,6 +489,61 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 			  Name="Zen.Barcode.SSRS.Design.dll"
 			  Checksum="yes"
 			  KeyPath="yes" />
+
+		<!--
+		<ReportItemDesigner>
+			<ReportItem Name="Barcode" Type="Zen.Barcode.SSRS.Design.BarcodeImageDesigner, Zen.Barcode.SSRS.Design" />
+		</ReportItemDesigner>
+		-->
+		<util:XmlConfig Id="VsBarcodeReportDesignersAdd"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions"
+						Name="ReportItemDesigner"
+						Action="create"
+						Node="element"
+						On="install"
+						Sequence="5"
+						VerifyPath="/Configuration/Extensions/ReportItemDesigner/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]" />
+		<util:XmlConfig Id="VsBarcodeReportDesignerAdd"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions/ReportItemDesigner"
+						Name="ReportItem"
+						Action="create"
+						Node="element"
+						On="install"
+						Sequence="6"
+						VerifyPath="/Configuration/Extensions/ReportItemDesigner/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]">
+		  <util:XmlConfig Id="VsBarcodeReportDesignerName"
+						  ElementId="VsBarcodeReportDesignerAdd"
+						  File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						  Name="Name"
+						  Value="Barcode"
+						  Sequence="7" />
+		  <util:XmlConfig Id="VsBarcodeReportDesignerType"
+						  ElementId="VsBarcodeReportDesignerAdd"
+						  File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						  Name="Type"
+						  Value="Zen.Barcode.SSRS.Design.BarcodeImageDesigner, Zen.Barcode.SSRS.Design"
+						  Sequence="7" />
+		</util:XmlConfig>
+		<util:XmlConfig Id="VsBarcodeReportDesignerItemRemove"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions/ReportItemDesigner"
+						Name="ReportItem"
+						Action="delete"
+						Node="element"
+						On="uninstall"
+						Sequence="8"
+						VerifyPath="/Configuration/Extensions/ReportItemDesigner/ReportItem[\[]@Name=&quot;Barcode&quot;[\]]" />
+		<util:XmlConfig Id="VsBarcodeReportDesignerRemove"
+						File="[PrivateAssembliesFolder]rsreportdesigner.config"
+						ElementPath="/Configuration/Extensions"
+						Name="ReportItemDesigner"
+						Action="delete"
+						Node="element"
+						On="uninstall"
+						Sequence="9"
+						VerifyPath="/Configuration/Extensions/ReportItemDesigner[\[]not(*)[\]]" />
 	  </Component>
 	</DirectoryRef>
   </Fragment>

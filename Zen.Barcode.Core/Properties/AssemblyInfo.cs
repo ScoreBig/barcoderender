@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Zen Barcode Core")]
-[assembly: AssemblyDescription("Barcode image rendering framework core.")]
+[assembly: AssemblyDescription("Barcode Rendering Framework core.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zen Design")]
+[assembly: AssemblyCompany("Zen Design Corp")]
 [assembly: AssemblyProduct("Zen Barcode")]
-[assembly: AssemblyCopyright("Copyright © Zen Design 2006 - 2011")]
+[assembly: AssemblyCopyright("Copyright © Zen Design Corp 2006 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

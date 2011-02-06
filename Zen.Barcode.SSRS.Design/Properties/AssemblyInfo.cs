@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Zen.Barcode.SSRS.Design")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Zen Barcode SSRS CRI Designer")]
+[assembly: AssemblyDescription("Barcode Rendering Framework SSRS design-time UI")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zen Design Corp")]
-[assembly: AssemblyProduct("Zen.Barcode.SSRS.Design")]
+[assembly: AssemblyProduct("Zen Barcode")]
 [assembly: AssemblyCopyright("Copyright © Zen Design Corp 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
