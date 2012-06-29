@@ -188,7 +188,7 @@ namespace Zen.Barcode.Web
                                 (?<BarMaxHeight>[0-9]*)\s*,\s*
                                 (?<BarMinWidth>[0-9]*)\s*,\s*
                                 (?<BarMaxWidth>[0-9]*)\s*\x5d)?:
-                                (?<BarCodePayload>[0-9A-Z-.$/+%]*))):
+                                (?<BarCodePayload>[0-9A-Za-z-.$/+%]*))):
                                 (?<HashCode>(?:[-])?[0-9]+)$",
                                 RegexOptions.Singleline | RegexOptions.Compiled |
                                 RegexOptions.IgnorePatternWhitespace);

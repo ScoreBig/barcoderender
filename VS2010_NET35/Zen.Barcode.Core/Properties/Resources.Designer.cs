@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BarcodeRender.Properties {
+namespace Zen.Barcode.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BarcodeRender.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BarcodeRender.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zen.Barcode.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace BarcodeRender.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid barcode symbology encountered..
+        /// </summary>
+        internal static string BarcodeSymbologyInvalid {
+            get {
+                return ResourceManager.GetString("BarcodeSymbologyInvalid", resourceCulture);
             }
         }
     }

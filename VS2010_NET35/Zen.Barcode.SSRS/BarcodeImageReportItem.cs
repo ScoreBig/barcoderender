@@ -81,6 +81,13 @@ namespace Zen.Barcode.SSRS
 					System.Drawing.Image barcodeImage =
 						drawObject.Draw(textToRender, metrics);
 
+					// If caller is giving us a rectangle that is narrow and
+					//	long then assume they want a vertical barcode
+					if (criWidth < criHeight)
+					{
+						barcodeImage.RotateFlip(System.Drawing.RotateFlipType.Rotate90FlipNone);
+					}
+
 					// Centre the image
 					int x = (bmp.Width - barcodeImage.Width) / 2;
 					int y = (bmp.Height - barcodeImage.Height) / 2;
