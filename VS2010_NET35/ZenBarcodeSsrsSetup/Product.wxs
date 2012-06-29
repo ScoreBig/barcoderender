@@ -58,7 +58,7 @@ by hand - sorry! For anyone interested in knowing what is involved read on...
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
 		 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
 		 RequiredVersion="3.6.3025.0">
-	<Product Id="{A3DFB31A-5968-47BF-9332-B5BEFEBC256C}"
+	<Product Id="*"
 					 Name="Zen Barcode for Reporting Services v$(var.InstallVersion)"
 					 Language="1033"
 					 Version="$(var.InstallVersion)"

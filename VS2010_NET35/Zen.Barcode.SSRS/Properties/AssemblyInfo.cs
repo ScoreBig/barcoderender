@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -18,3 +19,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("a44a2807-82c2-4108-9d12-4c802c1bcd4f")]
+
+// Need to allow partially trusted callers to get SSRS to call our builder
+//	from the header/footer...
+[assembly: AllowPartiallyTrustedCallers]

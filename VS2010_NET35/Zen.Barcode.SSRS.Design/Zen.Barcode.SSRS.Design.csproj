@@ -92,13 +92,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ReportingServices.Designer">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Designer.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Designer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportingServices.Designer.Controls">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Designer.Controls.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Designer.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportingServices.Interfaces">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Interfaces.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

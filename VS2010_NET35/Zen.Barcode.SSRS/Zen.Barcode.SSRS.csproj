@@ -92,10 +92,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ReportingServices.Interfaces">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Interfaces.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportingServices.ProcessingCore">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.ProcessingCore.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.ReportingServices.ProcessingCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
