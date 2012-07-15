@@ -18,8 +18,8 @@ Copyright © Zen Design Corp 2011 - 2012.  All rights reserved.
 				 InitialTargets="TFSBuildVersions">
 	<PropertyGroup>
 		<!-- Define major and minor version numbers here -->
-		<TFSMajorBuildNumber>2</TFSMajorBuildNumber>
-		<TFSMinorBuildNumber>3</TFSMinorBuildNumber>
+		<TFSMajorBuildNumber>3</TFSMajorBuildNumber>
+		<TFSMinorBuildNumber>0</TFSMinorBuildNumber>
 	</PropertyGroup>
 
 	<!-- This makes the project files a dependency of all targets so that things rebuild if they change -->
@@ -227,7 +227,7 @@ using System.Reflection%3B
 #include &quot;stdafx.h&quot;
 using namespace System%3B
 using namespace System::Reflection%3B
-[assembly:AssemblyFileVersion ( &quot;$(TFSFullBuildVersionString)&quot; )]
+[assembly:AssemblyFileVersion ( &quot;$(TFSFullBuildVersionString)&quot; )];
 "/>
 		</ItemGroup>
 

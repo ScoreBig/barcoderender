@@ -51,16 +51,40 @@ namespace Zen.Barcode.SSRS
 				BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(symbology);
 
 				// Get default metrics and override with values specified in CRI
-				BarcodeMetrics metrics = drawObject.GetDefaultMetrics(
-					GetCustomPropertyInt32("barcode:MaximumBarHeight", 30));
-				metrics.MinHeight =
-					GetCustomPropertyInt32("barcode:MinimumBarHeight", metrics.MinHeight);
-				metrics.MinWidth =
-					GetCustomPropertyInt32("barcode:MinimumBarWidth", metrics.MinWidth);
-				metrics.MaxWidth =
-					GetCustomPropertyInt32("barcode:MaximumBarWidth", metrics.MaxWidth);
-				metrics.InterGlyphSpacing =
-					GetCustomPropertyInt32("barcode:InterGlyphSpacing", metrics.InterGlyphSpacing);
+				// TODO: Need more elegant method for doing this...
+				BarcodeMetrics metrics = drawObject.GetDefaultMetrics(30);
+				BarcodeMetrics1d metrics1d = metrics as BarcodeMetrics1d;
+				if (metrics1d != null)
+				{
+					metrics1d.MaxHeight =
+						GetCustomPropertyInt32("barcode:MaximumBarHeight", metrics1d.MaxHeight);
+					metrics1d.MinHeight =
+						GetCustomPropertyInt32("barcode:MinimumBarHeight", metrics1d.MinHeight);
+					metrics1d.MinWidth =
+						GetCustomPropertyInt32("barcode:MinimumBarWidth", metrics1d.MinWidth);
+					metrics1d.MaxWidth =
+						GetCustomPropertyInt32("barcode:MaximumBarWidth", metrics1d.MaxWidth);
+					int interGlyphSpacing =
+						GetCustomPropertyInt32("barcode:InterGlyphSpacing", -1);
+					if (interGlyphSpacing >= 0)
+					{
+						metrics1d.InterGlyphSpacing = interGlyphSpacing;
+					}
+					metrics1d.RenderVertically =
+						GetCustomPropertyBool("barcode:RenderVertically", metrics1d.RenderVertically);
+				}
+				else if (symbology == BarcodeSymbology.CodeQr)
+				{
+					BarcodeMetricsQr qrMetrics = (BarcodeMetricsQr)metrics;
+					qrMetrics.Scale =
+						GetCustomPropertyInt32("barcode:QrScale", qrMetrics.Scale);
+					qrMetrics.Version =
+						GetCustomPropertyInt32("barcode:QrVersion", qrMetrics.Version);
+					qrMetrics.EncodeMode = (QrEncodeMode)
+						GetCustomPropertyInt32("barcode:QrEncodeMode", (int)qrMetrics.EncodeMode);
+					qrMetrics.ErrorCorrection = (QrErrorCorrection)
+						GetCustomPropertyInt32("barcode:QrErrorCorrection", (int)qrMetrics.ErrorCorrection);
+				}
 
 				// Get the text to render
 				string textToRender = (string)GetCustomProperty("barcode:Text");
@@ -80,13 +104,6 @@ namespace Zen.Barcode.SSRS
 					// Get barcode image
 					System.Drawing.Image barcodeImage =
 						drawObject.Draw(textToRender, metrics);
-
-					// If caller is giving us a rectangle that is narrow and
-					//	long then assume they want a vertical barcode
-					if (criWidth < criHeight)
-					{
-						barcodeImage.RotateFlip(System.Drawing.RotateFlipType.Rotate90FlipNone);
-					}
 
 					// Centre the image
 					int x = (bmp.Width - barcodeImage.Width) / 2;
@@ -114,6 +131,21 @@ namespace Zen.Barcode.SSRS
 		{
 			int result;
 			if (!Int32.TryParse((string)GetCustomProperty(propertyName), out result))
+			{
+				result = defaultValue;
+			}
+			return result;
+		}
+
+		private bool GetCustomPropertyBool(string propertyName)
+		{
+			return GetCustomPropertyBool(propertyName, false);
+		}
+
+		private bool GetCustomPropertyBool(string propertyName, bool defaultValue)
+		{
+			bool result;
+			if (!Boolean.TryParse((string)GetCustomProperty(propertyName), out result))
 			{
 				result = defaultValue;
 			}
