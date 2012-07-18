@@ -51,7 +51,6 @@ namespace Zen.Barcode
 		{
 			_minWidth = _maxWidth = width;
 			_minHeight = _maxHeight = height;
-			_interGlyphSpacing = -1;
 		}
 
 		/// <summary>
@@ -65,7 +64,6 @@ namespace Zen.Barcode
 			_minWidth = minWidth;
 			_maxWidth = maxWidth;
 			_minHeight = _maxHeight = height;
-			_interGlyphSpacing = -1;
 		}
 
 		/// <summary>
@@ -82,7 +80,6 @@ namespace Zen.Barcode
 			_maxWidth = maxWidth;
 			_minHeight = minHeight;
 			_maxHeight = maxHeight;
-			_interGlyphSpacing = -1;
 		}
 		#endregion
 
