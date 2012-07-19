@@ -12,6 +12,10 @@ namespace Zen.Barcode
 	using System.Text;
 	using Zen.Barcode.Properties;
 
+	/// <summary>
+	/// <c>CodeQrBarcodeDraw</c> extends <see cref="BarcodeDraw"/> to support
+	/// rendering QR barcodes.
+	/// </summary>
 	public class CodeQrBarcodeDraw : BarcodeDraw
 	{
 		#region Internal Objects
@@ -280,7 +284,7 @@ namespace Zen.Barcode
 			private int _structureAppendN;
 			private int _structureAppendM;
 			private int _structureAppendParity;
-			private string _structureAppendOriginaldata;
+			//private string _structureAppendOriginaldata;
 
 			private int _scale;
 			private Color _backgroundColor;
@@ -300,7 +304,7 @@ namespace Zen.Barcode
 				_structureAppendN = 0;
 				_structureAppendM = 0;
 				_structureAppendParity = 0;
-				_structureAppendOriginaldata = "";
+				//_structureAppendOriginaldata = "";
 
 				_scale = 4;
 				_backgroundColor = Color.White;
@@ -614,7 +618,7 @@ namespace Zen.Barcode
 					totalDataBits += dataBits[i];
 				}
 
-				int ec = (int)_errorCorrect;
+				sbyte ec = (sbyte)_errorCorrect;
 				int[][] maxDataBitsArray = new int[][] { new int[] { 0, 128, 224, 352, 512, 688, 864, 992, 1232, 1456, 1728, 2032, 2320, 2672, 2920, 3320, 3624, 4056, 4504, 5016, 5352, 5712, 6256, 6880, 7312, 8000, 8496, 9024, 9544, 10136, 10984, 11640, 12328, 13048, 13800, 14496, 15312, 15936, 16816, 17728, 18672 }, new int[] { 0, 152, 272, 440, 640, 864, 1088, 1248, 1552, 1856, 2192, 2592, 2960, 3424, 3688, 4184, 4712, 5176, 5768, 6360, 6888, 7456, 8048, 8752, 9392, 10208, 10960, 11744, 12248, 13048, 13880, 14744, 15640, 16568, 17528, 18448, 19472, 20528, 21616, 22496, 23648 }, new int[] { 0, 72, 128, 208, 288, 368, 480, 528, 688, 800, 976, 1120, 1264, 1440, 1576, 1784, 2024, 2264, 2504, 2728, 3080, 3248, 3536, 3712, 4112, 4304, 4768, 5024, 5288, 5608, 5960, 6344, 6760, 7208, 7688, 7888, 8432, 8768, 9136, 9776, 10208 }, new int[] { 0, 104, 176, 272, 384, 496, 608, 704, 880, 1056, 1232, 1440, 1648, 1952, 2088, 2360, 2600, 2936, 3176, 3560, 3880, 4096, 4544, 4912, 5312, 5744, 6032, 6464, 6968, 7288, 7880, 8264, 8920, 9368, 9848, 10288, 10832, 11408, 12016, 12656, 13328 } };
 				int maxDataBits = 0;
 
@@ -781,7 +785,7 @@ namespace Zen.Barcode
 				sbyte maskContent = (sbyte)(1 << maskNumber);
 
 				/* --- format information --- */
-				sbyte formatInformationValue = (sbyte)(ec << 3 | maskNumber);
+				sbyte formatInformationValue = (sbyte)(((sbyte)(ec << 3)) | maskNumber);
 				String[] formatInformationArray = new String[] { "101010000010010", "101000100100101", "101111001111100", "101101101001011", "100010111111001", "100000011001110", "100111110010111", "100101010100000", "111011111000100", "111001011110011", "111110110101010", "111100010011101", "110011000101111", "110001100011000", "110110001000001", "110100101110110", "001011010001001", "001001110111110", "001110011100111", "001100111010000", "000011101100010", "000001001010101", "000110100001100", "000100000111011", "011010101011111", "011000001101000", "011111100110001", "011101000000110", "010010010110100", "010000110000011", "010111011011010", "010101111101101" };
 				for (int i = 0; i < 15; i++)
 				{
@@ -1178,9 +1182,15 @@ namespace Zen.Barcode
 			/// <summary>
 			/// Encode the content using the encoding scheme given
 			/// </summary>
-			/// <param name="content"></param>
-			/// <param name="encoding"></param>
-			/// <returns></returns>
+			/// <param name="content">
+			/// The content to render.
+			/// </param>
+			/// <param name="encoding">
+			/// The character encoding of the content.
+			/// </param>
+			/// <returns>
+			/// A <see cref="Bitmap"/> object representing the QR barcode.
+			/// </returns>
 			public virtual Bitmap Encode(String content, Encoding encoding)
 			{
 				bool[][] matrix = CalculateQrCode(encoding.GetBytes(content));
@@ -1203,11 +1213,14 @@ namespace Zen.Barcode
 			}
 
 			/// <summary>
-			/// Encode the content using the encoding scheme given
+			/// Encode the content using an encoding scheme determined by the text.
 			/// </summary>
-			/// <param name="content"></param>
-			/// <param name="encoding"></param>
-			/// <returns></returns>
+			/// <param name="content">
+			/// The content to render.
+			/// </param>
+			/// <returns>
+			/// A <see cref="Bitmap"/> object representing the QR barcode.
+			/// </returns>
 			public virtual Bitmap Encode(String content)
 			{
 				if (QRCodeUtility.IsUnicode(content))
@@ -1293,26 +1306,54 @@ namespace Zen.Barcode
 		#endregion
 	}
 
+	/// <summary>
+	/// <c>BarcodeMetricsQr</c> extends <see cref="BarcodeMetrics2d"/> to
+	/// provide configuration properties used to render QR barcodes.
+	/// </summary>
 	public class BarcodeMetricsQr : BarcodeMetrics2d
 	{
+		/// <summary>
+		/// Gets or sets the scale factor used to render a QR barcode.
+		/// </summary>
+		/// <value>The scale.</value>
 		public int Scale
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the version used to render a QR barcode.
+		/// </summary>
+		/// <value>The version.</value>
+		/// <remarks>
+		/// The version determines the maximum amount of information that can
+		/// be encoded in a QR barcode.
+		/// If a value of 0 is used then the most compact representation for a
+		/// given piece of text will be used.
+		/// If the value is too small for the text to be rendered then an
+		/// exception will be thrown during rendering.
+		/// </remarks>
 		public int Version
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the encoding mode.
+		/// </summary>
+		/// <value>The encode mode.</value>
 		public QrEncodeMode EncodeMode
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the error correction scheme.
+		/// </summary>
+		/// <value>The error correction scheme.</value>
 		public QrErrorCorrection ErrorCorrection
 		{
 			get;
@@ -1320,18 +1361,50 @@ namespace Zen.Barcode
 		}
 	}
 
+	/// <summary>
+	/// Defines the QR barcode encoding methods.
+	/// </summary>
 	public enum QrEncodeMode
 	{
+		/// <summary>
+		/// Suitable for encoding any data.
+		/// </summary>
 		Byte = 0,
+
+		/// <summary>
+		/// Suitable for encoding numeric data.
+		/// </summary>
 		Numeric = 1,
+		
+		/// <summary>
+		/// Suitable for encoding alpha-numeric data.
+		/// </summary>
 		AlphaNumeric = 2,
 	}
 
+	/// <summary>
+	/// Defines the QR barcode error correction schemes.
+	/// </summary>
 	public enum QrErrorCorrection
 	{
+		/// <summary>
+		/// M error correction.
+		/// </summary>
 		M = 0,
+
+		/// <summary>
+		/// L error correction.
+		/// </summary>
 		L = 1,
+
+		/// <summary>
+		/// H error correction.
+		/// </summary>
 		H = 2,
+
+		/// <summary>
+		/// Q error correction.
+		/// </summary>
 		Q = 3,
 	}
 }

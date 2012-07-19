@@ -252,7 +252,7 @@ namespace Zen.Barcode
 		/// Gets an agent capable of rendering a Code PDF417 barcode with
 		/// added checksum glyphs.
 		/// </summary>
-		/// <value>A <see cref="T:Zen.Barcode.Code25BarcodeDraw"/> object.</value>
+		/// <value>A <see cref="T:Zen.Barcode.CodePdf417BarcodeDraw"/> object.</value>
 		public static CodePdf417BarcodeDraw CodePdf417
 		{
 			get
@@ -265,6 +265,10 @@ namespace Zen.Barcode
 			}
 		}
 
+		/// <summary>
+		/// Gets an agent capable of rendering a Code QR barcode.
+		/// </summary>
+		/// <value>A <see cref="T:Zen.Barcode.CodeQrBarcodeDraw"/> object.</value>
 		public static CodeQrBarcodeDraw CodeQr
 		{
 			get
