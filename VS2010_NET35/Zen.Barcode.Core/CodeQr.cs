@@ -1313,16 +1313,6 @@ namespace Zen.Barcode
 	public class BarcodeMetricsQr : BarcodeMetrics2d
 	{
 		/// <summary>
-		/// Gets or sets the scale factor used to render a QR barcode.
-		/// </summary>
-		/// <value>The scale.</value>
-		public int Scale
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		/// Gets or sets the version used to render a QR barcode.
 		/// </summary>
 		/// <value>The version.</value>

@@ -35,12 +35,13 @@ namespace Zen.Barcode.Web
 		private string _text;
 
 		private BarcodeSymbology _encodingScheme;
+		private int _scale = 1;
+
 		private int _barMinHeight = 30;
 		private int _barMaxHeight = 30;
 		private int _barMinWidth = 1;
 		private int _barMaxWidth = 1;
 
-		private int _qrScale = 3;
 		private int _qrVersion = 5;
 		private QrEncodeMode _qrEncodingMode = QrEncodeMode.Byte;
 		private QrErrorCorrection _qrErrorCorrect = QrErrorCorrection.M;
@@ -173,14 +174,14 @@ namespace Zen.Barcode.Web
 		}
 
 		/// <summary>
-		/// Gets the QR barcode scale factor.
+		/// Gets the barcode scale factor.
 		/// </summary>
-		/// <value>The QR barcode scale.</value>
-		public int QrScale
+		/// <value>The barcode scale.</value>
+		public int Scale
 		{
 			get
 			{
-				return _qrScale;
+				return _scale;
 			}
 		}
 
@@ -247,7 +248,8 @@ namespace Zen.Barcode.Web
 								(?<BarMinHeight>[0-9]*)\s*,\s*
 								(?<BarMaxHeight>[0-9]*)\s*,\s*
 								(?<BarMinWidth>[0-9]*)\s*,\s*
-								(?<BarMaxWidth>[0-9]*)\s*\x5d)?:
+								(?<BarMaxWidth>[0-9]*)\s*,\s*
+								(?<Scale>[0-9]*)\s*\x5d)?:
 								(?<BarCodePayload>[0-9A-Za-z-.$/+%]*))):
 								(?<HashCode>(?:[-])?[0-9]+)$",
 								RegexOptions.Singleline |
@@ -277,7 +279,7 @@ namespace Zen.Barcode.Web
 								(?<EncodeMode>[0-9])\s*,\s*
 								(?<ErrorCorrect>[0-9])\s*,\s*
 								(?<Version>[0-9]*)\s*,\s*
-								(?<Scale>[0-9]*)\s*,\s*
+								(?<Scale>[0-9]*)\s*\x5d)?:
 								(?<BarCodePayload>[0-9A-Za-z-.$/+%]*))):
 								(?<HashCode>(?:[-])?[0-9]+)$",
 								RegexOptions.Singleline |
@@ -286,7 +288,7 @@ namespace Zen.Barcode.Web
 						}
 					}
 				}
-				return _filenameParser;
+				return _qrFilenameParser;
 			}
 		}
 		#endregion
@@ -350,6 +352,13 @@ namespace Zen.Barcode.Web
 					_barMaxWidth = Int32.Parse(barMaxWidth);
 				}
 
+				// Determine scale
+				string scale = m.Result("${Scale}");
+				if (!string.IsNullOrEmpty(scale))
+				{
+					_scale = Int32.Parse(scale);
+				}
+
 				// Parse the barcode off the end of this string
 				_text = m.Result("${BarCodePayload}");
 				return;
@@ -392,7 +401,7 @@ namespace Zen.Barcode.Web
 				string scale = m.Result("${Scale}");
 				if (!string.IsNullOrEmpty(scale))
 				{
-					_qrScale = Int32.Parse(scale);
+					_scale = Int32.Parse(scale);
 				}
 
 				// Parse the barcode off the end of this string

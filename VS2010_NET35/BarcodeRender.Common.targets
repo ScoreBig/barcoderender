@@ -19,7 +19,7 @@ Copyright © Zen Design Corp 2011 - 2012.  All rights reserved.
 	<PropertyGroup>
 		<!-- Define major and minor version numbers here -->
 		<TFSMajorBuildNumber>3</TFSMajorBuildNumber>
-		<TFSMinorBuildNumber>0</TFSMinorBuildNumber>
+		<TFSMinorBuildNumber>1</TFSMinorBuildNumber>
 	</PropertyGroup>
 
 	<!-- This makes the project files a dependency of all targets so that things rebuild if they change -->

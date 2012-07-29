@@ -105,6 +105,8 @@ namespace Zen.Barcode.SSRS.Design
 					BarcodeDraw drawObject = BarcodeDrawFactory.GetSymbology(value);
 					BarcodeMetrics drawMetrics = drawObject.GetDefaultMetrics(MaximumBarHeight);
 
+					Scale = drawMetrics.Scale;
+
 					using (IDisposable disp = new BarcodeDesignerEditScope(this))
 					{
 						BarcodeMetrics1d metrics1d = drawMetrics as BarcodeMetrics1d;
@@ -122,7 +124,6 @@ namespace Zen.Barcode.SSRS.Design
 							BarcodeMetricsQr metricsQr = (BarcodeMetricsQr)drawMetrics;
 							QrEncodingMode = metricsQr.EncodeMode;
 							QrErrorCorrectionMode = metricsQr.ErrorCorrection;
-							QrScale = metricsQr.Scale;
 							QrVersion = metricsQr.Version;
 						}
 					}
@@ -148,6 +149,29 @@ namespace Zen.Barcode.SSRS.Design
 				if (Text != value)
 				{
 					SetCustomProperty("barcode:Text", value);
+					InvalidateIfPossible();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the scale factor used to render the barcode.
+		/// </summary>
+		/// <value>The scale factor.</value>
+		[Browsable(true)]
+		[Category("Barcode")]
+		[Description("Gets or sets the scale factor used to render the barcode.")]
+		public int Scale
+		{
+			get
+			{
+				return GetCustomPropertyInt32("barcode:Scale", 1);
+			}
+			set
+			{
+				if (Scale != value)
+				{
+					SetCustomProperty("barcode:Scale", value);
 					InvalidateIfPossible();
 				}
 			}
@@ -368,33 +392,6 @@ namespace Zen.Barcode.SSRS.Design
 		}
 
 		/// <summary>
-		/// Gets or sets the scale factor used to render QR 2D barcode.
-		/// </summary>
-		/// <value>The qr scale.</value>
-		[Browsable(true)]
-		[Category("QR Barcode")]
-		[Description("Gets or sets the scale factor used to render QR 2D barcode.")]
-		public int? QrScale
-		{
-			get
-			{
-				if (Symbology != BarcodeSymbology.CodeQr)
-				{
-					return null;
-				}
-				return GetCustomPropertyInt32("barcode:QrScale", 3);
-			}
-			set
-			{
-				if (Symbology == BarcodeSymbology.CodeQr && value != null && QrScale != value)
-				{
-					SetCustomProperty("barcode:QrScale", value.Value);
-					InvalidateIfPossible();
-				}
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the version used to render QR 2D barcode.
 		/// </summary>
 		/// <value>The qr version.</value>
@@ -545,7 +542,10 @@ namespace Zen.Barcode.SSRS.Design
 			{
 				BarcodeDraw drawObject =
 					BarcodeDrawFactory.GetSymbology(Symbology);
+
 				BarcodeMetrics metrics = drawObject.GetDefaultMetrics(30);
+				metrics.Scale = Scale;
+
 				BarcodeMetrics1d metrics1d = metrics as BarcodeMetrics1d;
 				if (metrics1d != null)
 				{
@@ -559,10 +559,6 @@ namespace Zen.Barcode.SSRS.Design
 				else if (Symbology == BarcodeSymbology.CodeQr)
 				{
 					BarcodeMetricsQr qrMetrics = (BarcodeMetricsQr)metrics;
-					if (QrScale != null)
-					{
-						qrMetrics.Scale = QrScale.Value;
-					}
 					if (QrVersion != null)
 					{
 						qrMetrics.Version = QrVersion.Value;

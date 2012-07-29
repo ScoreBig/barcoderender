@@ -126,15 +126,17 @@ Enjoy the framework&amp;lt%3bbr /&amp;gt%3bThe Barcode Rendering Framework Team
       <DocumentationSource sourceFile="..\Zen.Barcode.Design\bin\Debug\Zen.Barcode.Design.xml" />
       <DocumentationSource sourceFile="..\Zen.Barcode.Web\bin\Debug\Zen.Barcode.Web.dll" />
       <DocumentationSource sourceFile="..\Zen.Barcode.Web\bin\Debug\Zen.Barcode.Web.xml" />
+      <DocumentationSource sourceFile="..\Zen.Barcode.Web.Mvc\bin\Debug\Zen.Barcode.Web.Mvc.dll" />
+      <DocumentationSource sourceFile="..\Zen.Barcode.Web.Mvc\bin\Debug\Zen.Barcode.Web.Mvc.xml" />
     </DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
-      <NamespaceSummaryItem name="Zen.Barcode" isDocumented="True" xmlns="">Contains all core barcode rendering classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Zen.Barcode.Properties" isDocumented="False" xmlns="" />
-      <NamespaceSummaryItem name="Zen.Barcode.Web" isDocumented="True" xmlns="">Contains all ASP.NET barcode support objects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Zen.Barcode.Web.Design" isDocumented="True" xmlns="">Contains design-time components to aid the use of barcode components from visual design tools such as the Visual Studio IDE.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Zen.Barcode.Web.Xsl" isDocumented="True" xmlns="">Contains barcode-to-XSL bridge components.</NamespaceSummaryItem>
-    </NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False" />
+<NamespaceSummaryItem name="Zen.Barcode" isDocumented="True">Contains all core barcode rendering classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Zen.Barcode.Properties" isDocumented="False" />
+<NamespaceSummaryItem name="Zen.Barcode.Web" isDocumented="True">Contains all ASP.NET barcode support objects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Zen.Barcode.Web.Design" isDocumented="True">Contains design-time components to aid the use of barcode components from visual design tools such as the Visual Studio IDE.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Zen.Barcode.Web.Xsl" isDocumented="True">Contains barcode-to-XSL bridge components.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Zen.Barcode.Web.Mvc" isDocumented="True">Contains extensions to support ASP.NET MVC applications.</NamespaceSummaryItem></NamespaceSummaries>
     <HelpFileVersion>3.0.10719.0</HelpFileVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>

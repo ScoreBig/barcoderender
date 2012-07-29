@@ -12,6 +12,7 @@ namespace Zen.Barcode.Web
 	using System.Threading;
 	using System.Web;
 	using Zen.Barcode;
+	using System.IO;
 
 	/// <summary>
 	/// <b>BarcodeImageHandler</b> is a custom ASP.NET HTTP Handler for
@@ -105,7 +106,10 @@ namespace Zen.Barcode.Web
 					// Get the object capable of rendering the barcode
 					BarcodeDraw drawObject =
 						BarcodeDrawFactory.GetSymbology(uri.EncodingScheme);
+
 					BarcodeMetrics metrics = drawObject.GetDefaultMetrics(30);
+					metrics.Scale = uri.Scale;
+
 					BarcodeMetrics1d metrics1d = metrics as BarcodeMetrics1d;
 					if (metrics1d != null)
 					{
@@ -119,14 +123,32 @@ namespace Zen.Barcode.Web
 						BarcodeMetricsQr qrMetrics = (BarcodeMetricsQr)metrics;
 						qrMetrics.EncodeMode = uri.QrEncodingMode;
 						qrMetrics.ErrorCorrection = uri.QrErrorCorrect;
-						qrMetrics.Scale = uri.QrScale;
 						qrMetrics.Version = uri.QrVersion;
 					}
 
 					// Render barcode and save directly onto response stream
+					MemoryStream imageStream = new MemoryStream();
 					using (Image image = drawObject.Draw(uri.Text, metrics))
 					{
-						image.Save(_response.OutputStream, ImageFormat.Jpeg);
+						// Save to temporary stream because image tried to seek
+						//	during the write operation
+						image.Save(imageStream, ImageFormat.Jpeg);
+
+						// Move to start of the stream
+						imageStream.Seek(0, SeekOrigin.Begin);
+
+						// Do synchronous copy to response output stream
+						int blockSize = 1024;
+						byte[] buffer = new byte[blockSize];
+						while (true)
+						{
+							int bytesRead = imageStream.Read(buffer, 0, blockSize);
+							if (bytesRead == 0)
+							{
+								break;
+							}
+							_response.OutputStream.Write(buffer, 0, bytesRead);
+						}
 					}
 				}
 				catch (Exception e)

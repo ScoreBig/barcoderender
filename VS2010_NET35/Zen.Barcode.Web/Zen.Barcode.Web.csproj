@@ -100,9 +100,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarcodeImageRouteHandler.cs" />
     <Compile Include="BarcodeLabel.cs" />
     <Compile Include="BarcodeImageHandler.cs" />
     <Compile Include="BarcodeImageUri.cs" />

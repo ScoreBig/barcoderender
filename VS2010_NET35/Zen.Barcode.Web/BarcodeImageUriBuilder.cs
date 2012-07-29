@@ -7,8 +7,6 @@
 namespace Zen.Barcode.Web
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Drawing;
 	using System.IO;
 	using System.Text;
 	using System.Web;
@@ -34,16 +32,21 @@ namespace Zen.Barcode.Web
 		#region Private Fields
 		private string _text;
 
+		private bool _useExtensionlessUri;
+
 		private BarcodeSymbology _encodingScheme;
+
+		private int _scale = 1;
+		private bool _isScaleSet;
+
 		private int _barMinHeight = 30;
 		private int _barMaxHeight = 30;
 		private int _barMinWidth = 1;
 		private int _barMaxWidth = 1;
 
-		private int _qrScale = 3;
-		private int _qrVersion = 5;
 		private QrEncodeMode _qrEncodingMode = QrEncodeMode.Byte;
 		private QrErrorCorrection _qrErrorCorrect = QrErrorCorrection.M;
+		private int _qrVersion = 5;
 		#endregion
 
 		#region Public Constructors
@@ -73,6 +76,24 @@ namespace Zen.Barcode.Web
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether to use extensionless URI.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> to use extensionless URIs; otherwise, <c>false</c>.
+		/// </value>
+		public bool UseExtensionlessUri
+		{
+			get
+			{
+				return _useExtensionlessUri;
+			}
+			set
+			{
+				_useExtensionlessUri = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets/sets the barcode encoding scheme
 		/// </summary>
 		/// <value>A value from the <see cref="T:BarcodeSymbology"/> 
@@ -86,6 +107,17 @@ namespace Zen.Barcode.Web
 			set
 			{
 				_encodingScheme = value;
+				if (!_isScaleSet)
+				{
+					if (value == BarcodeSymbology.CodeQr)
+					{
+						_scale = 3;
+					}
+					else
+					{
+						_scale = 1;
+					}
+				}
 			}
 		}
 
@@ -156,21 +188,24 @@ namespace Zen.Barcode.Web
 		}
 
 		/// <summary>
-		/// Gets or sets the QR barcode scale factor.
+		/// Gets or sets the barcode scale factor.
 		/// </summary>
-		/// <value>The QR barcode scale.</value>
+		/// <value>The barcode scale.</value>
 		/// <remarks>
-		/// The default for this property is 3.
+		/// The default for this property is;
+		/// 1 for all 1D barcodes.
+		/// 3 for QR barcode.
 		/// </remarks>
-		public int QrScale
+		public int Scale
 		{
 			get
 			{
-				return _qrScale;
+				return _scale;
 			}
 			set
 			{
-				_qrScale = value;
+				_scale = value;
+				_isScaleSet = true;
 			}
 		}
 
@@ -259,33 +294,37 @@ namespace Zen.Barcode.Web
 			if (EncodingScheme == BarcodeSymbology.CodeQr)
 			{
 				return BarcodeImageUriBuilder.GetFileNameFromQrParams(
-					Text, QrEncodingMode, QrErrorCorrect, QrVersion, QrScale);
+					Text, Scale, UseExtensionlessUri,
+					QrEncodingMode, QrErrorCorrect, QrVersion);
 			}
 			else
 			{
 				return BarcodeImageUriBuilder.GetFileNameFromParams(
-					Text, EncodingScheme, BarMinHeight, BarMaxHeight, BarMinWidth, BarMaxWidth);
+					Text, Scale, UseExtensionlessUri,
+					EncodingScheme, BarMinHeight, BarMaxHeight, BarMinWidth, BarMaxWidth);
 			}
 		}
 		#endregion
 
 		#region Private Static Methods
-		private static string GetFileNameFromParams(string text,
+		private static string GetFileNameFromParams(
+			string text, int scale, bool useExtensionUri,
 			BarcodeSymbology encodingScheme, int barMinHeight, int barMaxHeight,
 			int barMinWidth, int barMaxWidth)
 		{
 			// Build key string
 			string fileName = string.Format(
-				"Barcode[{0},{1},{2},{3},{4}]:{5}",
+				"Barcode[{0},{1},{2},{3},{4},{5}]:{6}",
 				(int)encodingScheme, barMinHeight, barMaxHeight,
-				barMinWidth, barMaxWidth, text);
+				barMinWidth, barMaxWidth, scale, text);
 
 			// Return encoded filename based on key
-			return BuildEncodedFileName(fileName);
+			return BuildEncodedFileName(fileName, useExtensionUri);
 		}
 
-		private static string GetFileNameFromQrParams(string text,
-			QrEncodeMode encoding, QrErrorCorrection errorCorrect, int version, int scale)
+		private static string GetFileNameFromQrParams(
+			string text, int scale, bool useExtensionUri,
+			QrEncodeMode encoding, QrErrorCorrection errorCorrect, int version)
 		{
 			// Build key string
 			string fileName = string.Format(
@@ -293,10 +332,11 @@ namespace Zen.Barcode.Web
 				(int)encoding, (int)errorCorrect, version, scale, text);
 
 			// Return encoded filename based on key
-			return BuildEncodedFileName(fileName);
+			return BuildEncodedFileName(fileName, useExtensionUri);
 		}
 
-		private static string BuildEncodedFileName(string fileName)
+		private static string BuildEncodedFileName(
+			string fileName, bool useExtensionUri)
 		{
 			// Add filename hash for security
 			int hash = fileName.GetHashCode();
@@ -323,8 +363,15 @@ namespace Zen.Barcode.Web
 			// Base64 encode the memory block from the memory stream
 			fileName = HttpServerUtility.UrlTokenEncode(buffer);
 
-			// Check the filename isn't too long!
-			fileName += ".Barcode";
+			if (useExtensionUri)
+			{
+				fileName = "~/Barcode/" + fileName;
+			}
+			else
+			{
+				// Check the filename isn't too long!
+				fileName = "~/" + fileName + ".Barcode";
+			}
 
 			// Prefix with root application path
 			// TODO: Return absolute URI...

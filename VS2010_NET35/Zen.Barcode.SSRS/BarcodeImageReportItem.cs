@@ -53,6 +53,9 @@ namespace Zen.Barcode.SSRS
 				// Get default metrics and override with values specified in CRI
 				// TODO: Need more elegant method for doing this...
 				BarcodeMetrics metrics = drawObject.GetDefaultMetrics(30);
+				metrics.Scale =
+					GetCustomPropertyInt32("barcode:Scale", metrics.Scale);
+
 				BarcodeMetrics1d metrics1d = metrics as BarcodeMetrics1d;
 				if (metrics1d != null)
 				{
@@ -76,8 +79,6 @@ namespace Zen.Barcode.SSRS
 				else if (symbology == BarcodeSymbology.CodeQr)
 				{
 					BarcodeMetricsQr qrMetrics = (BarcodeMetricsQr)metrics;
-					qrMetrics.Scale =
-						GetCustomPropertyInt32("barcode:QrScale", qrMetrics.Scale);
 					qrMetrics.Version =
 						GetCustomPropertyInt32("barcode:QrVersion", qrMetrics.Version);
 					qrMetrics.EncodeMode = (QrEncodeMode)
