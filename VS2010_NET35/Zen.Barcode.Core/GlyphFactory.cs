@@ -20,8 +20,11 @@ namespace Zen.Barcode
     public abstract class GlyphFactory
     {
         #region Private Fields
-        private Dictionary<char, BarGlyph> _rawLookup;
-        private Dictionary<char, Glyph> _lookup;
+
+        private readonly object _rawLookupSyncFactory = new object();
+        private object _lookupSyncFactory = new object();
+        private volatile Dictionary<char, BarGlyph> _rawLookup;
+        private volatile Dictionary<char, Glyph> _lookup;
         #endregion
 
         #region Protected Constructors
@@ -79,7 +82,10 @@ namespace Zen.Barcode
         public virtual BarGlyph GetRawGlyph(char character)
         {
             EnsureRawGlyphLookup();
-            return _rawLookup[character];
+            lock (_rawLookupSyncFactory)
+            {
+                return _rawLookup[character]; 
+            }
         }
 
         /// <summary>
@@ -145,7 +151,11 @@ namespace Zen.Barcode
         public virtual Glyph[] GetGlyphs(char character, bool allowComposite)
         {
             EnsureFullLookup();
-            Glyph glyph = _lookup[character];
+            Glyph glyph;
+            lock (_lookupSyncFactory)
+            {
+                glyph = _lookup[character]; 
+            }
             CompositeGlyph compGlyph = glyph as CompositeGlyph;
             if (compGlyph != null && !allowComposite)
             {
@@ -224,9 +234,13 @@ namespace Zen.Barcode
         #region Private Methods
         private void EnsureRawGlyphLookup()
         {
-            // Raw lookup table is simple.
-            if (_rawLookup == null)
+            if (_rawLookup != null) return;
+
+            lock (_rawLookupSyncFactory)
             {
+                // Raw lookup table is simple.
+                if (_rawLookup != null) return;
+
                 _rawLookup = new Dictionary<char, BarGlyph>();
                 BarGlyph[] barGlyphs = GetGlyphs();
                 foreach (BarGlyph glyph in barGlyphs)
@@ -238,8 +252,12 @@ namespace Zen.Barcode
 
         private void EnsureFullLookup()
         {
-            if (_lookup == null)
+            if (_lookup != null) return;
+
+            lock (_lookupSyncFactory)
             {
+                if (_lookup != null) return;
+
                 _lookup = new Dictionary<char, Glyph>();
                 CompositeGlyph[] glyphs = GetCompositeGlyphs();
                 foreach (CompositeGlyph glyph in glyphs)
