@@ -1,5 +1,5 @@
 # barcoderender
-Port of the very useful Barcode Rendering Framework https://barcoderender.codeplex.com/
+Fork of the very useful Barcode Rendering Framework https://barcoderender.codeplex.com/
 
 # Project Description (from the CodePlex page)
 The bar-code rendering framework quite simply encapsulates the native rendering of barcode symbologies without requiring third-party fonts.
